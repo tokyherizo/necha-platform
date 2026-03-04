@@ -9,9 +9,9 @@ const Collaboration = sequelize.define('Collaboration', {
   },
   type: { type: DataTypes.STRING },
   message: { type: DataTypes.TEXT },
-  requester_id: { type: DataTypes.UUID, references: { model: 'Companies', key: 'id' } },
-  receiver_id: { type: DataTypes.UUID, references: { model: 'Companies', key: 'id' } },
-  project_id: { type: DataTypes.UUID, references: { model: 'Projects', key: 'id' } },
+  requester_id: { type: DataTypes.UUID },
+  receiver_id: { type: DataTypes.UUID },
+  project_id: { type: DataTypes.UUID },
 })
 
 module.exports = Collaboration

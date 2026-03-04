@@ -16,7 +16,7 @@ const MarketplaceItem = sequelize.define('MarketplaceItem', {
   review_count: { type: DataTypes.INTEGER, defaultValue: 0 },
   is_verified: { type: DataTypes.BOOLEAN, defaultValue: false },
   is_featured: { type: DataTypes.BOOLEAN, defaultValue: false },
-  company_id: { type: DataTypes.UUID, references: { model: 'Companies', key: 'id' } },
+  company_id: { type: DataTypes.UUID },
 })
 
 module.exports = MarketplaceItem

@@ -1,5 +1,7 @@
+import { useEffect } from 'react'
 import { Routes, Route, Navigate } from 'react-router-dom'
 import { useAuthStore } from '@/store/authStore'
+import { useThemeStore } from '@/store/themeStore'
 
 // Layout
 import MainLayout from '@/components/layout/MainLayout'
@@ -35,6 +37,23 @@ const PublicRoute = ({ children }) => {
 }
 
 export default function App() {
+  const { theme, language } = useThemeStore()
+
+  useEffect(() => {
+    const html = document.documentElement
+    if (theme === 'dark') {
+      html.classList.add('dark')
+      html.classList.remove('light')
+    } else {
+      html.classList.add('light')
+      html.classList.remove('dark')
+    }
+  }, [theme])
+
+  useEffect(() => {
+    document.documentElement.lang = language
+  }, [language])
+
   return (
     <Routes>
       {/* Public landing */}

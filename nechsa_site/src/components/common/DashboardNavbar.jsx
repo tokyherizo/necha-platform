@@ -1,11 +1,15 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { Bell, Search, Menu, Plus, MessageSquare } from 'lucide-react'
+import { Bell, Search, Menu, Plus, MessageSquare, Sun, Moon } from 'lucide-react'
 import { useAuthStore } from '@/store/authStore'
+import { useThemeStore } from '@/store/themeStore'
+import { useTranslation } from '@/i18n/useTranslation'
 import { getInitials } from '@/utils/helpers'
 
 export default function DashboardNavbar({ onMenuClick }) {
   const { user } = useAuthStore()
+  const { theme, toggleTheme, toggleLanguage, language } = useThemeStore()
+  const { t } = useTranslation()
   const [searchQuery, setSearchQuery] = useState('')
   const navigate = useNavigate()
 
@@ -17,7 +21,7 @@ export default function DashboardNavbar({ onMenuClick }) {
   }
 
   return (
-    <header className="h-16 bg-dark-800/80 backdrop-blur-xl border-b border-white/5 flex items-center px-4 lg:px-6 gap-4 sticky top-0 z-20">
+    <header className="h-16 bg-dark-800/80 backdrop-blur-xl border-b border-white/5 dark:bg-dark-800/80 light:bg-white/80 flex items-center px-4 lg:px-6 gap-4 sticky top-0 z-20">
       {/* Mobile menu */}
       <button onClick={onMenuClick} className="lg:hidden text-slate-400 hover:text-white p-2 rounded-lg">
         <Menu size={20} />
@@ -31,7 +35,7 @@ export default function DashboardNavbar({ onMenuClick }) {
             type="text"
             value={searchQuery}
             onChange={e => setSearchQuery(e.target.value)}
-            placeholder="Search companies, projects..."
+            placeholder={t.common.search}
             className="w-full bg-dark-700/60 border border-white/5 rounded-lg pl-9 pr-4 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-primary-500/50 transition"
           />
         </div>
@@ -43,8 +47,26 @@ export default function DashboardNavbar({ onMenuClick }) {
           className="hidden sm:flex items-center gap-2 bg-gradient-to-r from-primary-600 to-secondary-600 hover:from-primary-500 hover:to-secondary-500 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-all"
         >
           <Plus size={16} />
-          New Project
+          {t.common.newProject}
         </Link>
+
+        {/* Language toggle */}
+        <button
+          onClick={toggleLanguage}
+          className="text-slate-400 hover:text-white text-xs font-bold px-2.5 py-1.5 rounded-lg border border-white/10 hover:bg-white/5 transition-colors"
+          title={language === 'en' ? 'Passer en français' : 'Switch to English'}
+        >
+          {language === 'en' ? 'FR' : 'EN'}
+        </button>
+
+        {/* Theme toggle */}
+        <button
+          onClick={toggleTheme}
+          className="p-2 text-slate-400 hover:text-white rounded-lg hover:bg-white/5 transition"
+          title={theme === 'dark' ? t.common.lightMode : t.common.darkMode}
+        >
+          {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
+        </button>
 
         {/* Notifications */}
         <button className="relative p-2 text-slate-400 hover:text-white rounded-lg hover:bg-white/5 transition">

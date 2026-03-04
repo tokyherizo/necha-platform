@@ -19,8 +19,8 @@ const Project = sequelize.define('Project', {
   progress: { type: DataTypes.INTEGER, defaultValue: 0 },
   start_date: { type: DataTypes.DATEONLY },
   end_date: { type: DataTypes.DATEONLY },
-  company_id: { type: DataTypes.UUID, allowNull: false, references: { model: 'Companies', key: 'id' } },
-  created_by: { type: DataTypes.UUID, references: { model: 'Users', key: 'id' } },
+  company_id: { type: DataTypes.UUID, allowNull: false },
+  created_by: { type: DataTypes.UUID },
 })
 
 module.exports = Project

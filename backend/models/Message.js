@@ -8,8 +8,8 @@ const Message = sequelize.define('Message', {
   file_url: { type: DataTypes.STRING },
   is_read: { type: DataTypes.BOOLEAN, defaultValue: false },
   read_at: { type: DataTypes.DATE },
-  sender_id: { type: DataTypes.UUID, allowNull: false, references: { model: 'Users', key: 'id' } },
-  receiver_id: { type: DataTypes.UUID, allowNull: false, references: { model: 'Users', key: 'id' } },
+  sender_id: { type: DataTypes.UUID, allowNull: false },
+  receiver_id: { type: DataTypes.UUID, allowNull: false },
   conversation_id: { type: DataTypes.STRING, allowNull: false },
 })
 

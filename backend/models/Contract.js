@@ -16,10 +16,10 @@ const Contract = sequelize.define('Contract', {
   signed_at: { type: DataTypes.DATE },
   terms: { type: DataTypes.TEXT },
   file_url: { type: DataTypes.STRING },
-  company_a_id: { type: DataTypes.UUID, references: { model: 'Companies', key: 'id' } },
-  company_b_id: { type: DataTypes.UUID, references: { model: 'Companies', key: 'id' } },
-  project_id: { type: DataTypes.UUID, references: { model: 'Projects', key: 'id' } },
-  created_by: { type: DataTypes.UUID, references: { model: 'Users', key: 'id' } },
+  company_a_id: { type: DataTypes.UUID },
+  company_b_id: { type: DataTypes.UUID },
+  project_id: { type: DataTypes.UUID },
+  created_by: { type: DataTypes.UUID },
 })
 
 module.exports = Contract

@@ -1,25 +1,26 @@
 import { NavLink, useNavigate } from 'react-router-dom'
 import {
   LayoutDashboard, Building2, FolderKanban, MessageSquare,
-  ShoppingBag, FileText, Sparkles, Settings, LogOut,
-  ChevronRight, X,
+  ShoppingBag, FileText, Sparkles, Settings, LogOut, X,
 } from 'lucide-react'
 import { useAuthStore } from '@/store/authStore'
+import { useTranslation } from '@/i18n/useTranslation'
 import { getInitials } from '@/utils/helpers'
-
-const navItems = [
-  { to: '/dashboard',  icon: LayoutDashboard, label: 'Dashboard' },
-  { to: '/matching',   icon: Sparkles,        label: 'AI Matching',  badge: 'New' },
-  { to: '/companies',  icon: Building2,       label: 'Companies' },
-  { to: '/projects',   icon: FolderKanban,    label: 'Projects' },
-  { to: '/messages',   icon: MessageSquare,   label: 'Messages' },
-  { to: '/contracts',  icon: FileText,        label: 'Contracts' },
-  { to: '/marketplace',icon: ShoppingBag,     label: 'Marketplace' },
-]
 
 export default function Sidebar({ open, onClose }) {
   const { user, logout } = useAuthStore()
+  const { t } = useTranslation()
   const navigate = useNavigate()
+
+  const navItems = [
+    { to: '/dashboard',   icon: LayoutDashboard, labelKey: 'dashboard' },
+    { to: '/matching',    icon: Sparkles,        labelKey: 'aiMatching', badge: 'New' },
+    { to: '/companies',   icon: Building2,       labelKey: 'companies' },
+    { to: '/projects',    icon: FolderKanban,    labelKey: 'projects' },
+    { to: '/messages',    icon: MessageSquare,   labelKey: 'messages' },
+    { to: '/contracts',   icon: FileText,        labelKey: 'contracts' },
+    { to: '/marketplace', icon: ShoppingBag,     labelKey: 'marketplace' },
+  ]
 
   const handleLogout = () => {
     logout()
@@ -53,7 +54,7 @@ export default function Sidebar({ open, onClose }) {
 
         {/* Navigation */}
         <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
-          {navItems.map(({ to, icon: Icon, label, badge }) => (
+          {navItems.map(({ to, icon: Icon, labelKey, badge }) => (
             <NavLink
               key={to}
               to={to}
@@ -63,7 +64,7 @@ export default function Sidebar({ open, onClose }) {
               onClick={onClose}
             >
               <Icon size={18} />
-              <span className="flex-1 font-medium text-sm">{label}</span>
+              <span className="flex-1 font-medium text-sm">{t.sidebar[labelKey]}</span>
               {badge && (
                 <span className="text-xs font-semibold bg-primary-600/30 text-primary-400 px-2 py-0.5 rounded-full border border-primary-500/30">
                   {badge}
@@ -81,7 +82,7 @@ export default function Sidebar({ open, onClose }) {
             onClick={onClose}
           >
             <Settings size={18} />
-            <span className="font-medium text-sm">Settings</span>
+            <span className="font-medium text-sm">{t.sidebar.settings}</span>
           </NavLink>
 
           {/* User card */}
@@ -104,7 +105,7 @@ export default function Sidebar({ open, onClose }) {
               className="mt-3 w-full flex items-center justify-center gap-2 text-slate-400 hover:text-red-400 text-xs font-medium py-1.5 rounded transition-colors"
             >
               <LogOut size={14} />
-              Sign out
+              {t.sidebar.logout}
             </button>
           </div>
         </div>

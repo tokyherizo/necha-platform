@@ -19,6 +19,24 @@
   --dark-border: #1a1a2e;
   --text-primary: #f8fafc;
   --text-secondary: #94a3b8;
+  --bg-body: #0a0a0f;
+  --bg-card: rgba(15, 15, 26, 0.8);
+  --bg-card-solid: #0f0f1a;
+  --bg-input: rgba(30, 30, 50, 0.6);
+  --border-subtle: rgba(255, 255, 255, 0.05);
+  --border-card: rgba(79, 70, 229, 0.2);
+}
+
+/* Light mode variable overrides */
+html.light {
+  --bg-body: #f1f5f9;
+  --bg-card: rgba(255, 255, 255, 0.85);
+  --bg-card-solid: #ffffff;
+  --bg-input: rgba(241, 245, 249, 0.9);
+  --border-subtle: rgba(0, 0, 0, 0.06);
+  --border-card: rgba(79, 70, 229, 0.25);
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
 }
 
 html {
@@ -27,11 +45,12 @@ html {
 
 body {
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  background-color: var(--dark-bg);
+  background-color: var(--bg-body);
   color: var(--text-primary);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* Custom scrollbar */
@@ -207,4 +226,98 @@ body {
 }
 .progress-fill {
   @apply h-full rounded-full bg-gradient-to-r from-primary-600 to-secondary-600 transition-all duration-700;
+}
+
+/* ===================== Light mode overrides ===================== */
+
+html.light body {
+  background-color: #f1f5f9;
+  color: #0f172a;
+}
+
+/* Scrollbar */
+html.light ::-webkit-scrollbar-track {
+  background: #e2e8f0;
+}
+html.light ::-webkit-scrollbar-thumb {
+  background: #6366f1;
+}
+
+/* Glass morphism */
+html.light .glass {
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+html.light .glass-card {
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(79, 70, 229, 0.2);
+}
+
+/* Cards */
+html.light .card {
+  background: #ffffff;
+  border-color: rgba(79, 70, 229, 0.15);
+  color: #0f172a;
+}
+
+/* Input */
+html.light .input-dark {
+  background: #f8fafc;
+  border-color: rgba(79, 70, 229, 0.25);
+  color: #0f172a;
+}
+html.light .input-dark::placeholder {
+  color: #94a3b8;
+}
+
+/* Table */
+html.light .table-dark th {
+  color: #64748b;
+  border-bottom-color: rgba(0, 0, 0, 0.06);
+}
+html.light .table-dark td {
+  color: #334155;
+  border-bottom-color: rgba(0, 0, 0, 0.06);
+}
+html.light .table-dark tbody tr:hover td {
+  background: rgba(0, 0, 0, 0.02);
+}
+
+/* Sidebar */
+html.light .sidebar-link {
+  color: #475569;
+}
+html.light .sidebar-link:hover {
+  color: #0f172a;
+  background: rgba(79, 70, 229, 0.07);
+}
+html.light .sidebar-link.active {
+  color: #4f46e5;
+  background: rgba(79, 70, 229, 0.12);
+  border-color: rgba(79, 70, 229, 0.35);
+}
+
+/* Navbar */
+html.light header[class*="bg-dark"] {
+  background: rgba(248, 250, 252, 0.9) !important;
+  border-bottom-color: rgba(0, 0, 0, 0.08) !important;
+}
+
+/* Gradient border */
+html.light .gradient-border {
+  background: linear-gradient(#ffffff, #ffffff) padding-box,
+              linear-gradient(135deg, #6366f1, #a855f7) border-box;
+}
+
+/* Progress bar track */
+html.light .progress-bar {
+  background: #e2e8f0;
+}
+
+/* Background grid */
+html.light .bg-grid {
+  background-image:
+    linear-gradient(rgba(99, 102, 241, 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(99, 102, 241, 0.07) 1px, transparent 1px);
 }

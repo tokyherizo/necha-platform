@@ -13,7 +13,7 @@ const User = sequelize.define('User', {
   phone: { type: DataTypes.STRING },
   is_active: { type: DataTypes.BOOLEAN, defaultValue: true },
   last_login: { type: DataTypes.DATE },
-  company_id: { type: DataTypes.UUID, references: { model: 'Companies', key: 'id' } },
+  company_id: { type: DataTypes.UUID },
 }, {
   hooks: {
     beforeCreate: async (user) => {

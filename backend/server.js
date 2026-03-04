@@ -9,6 +9,8 @@ const { Server } = require('socket.io')
 const rateLimit = require('express-rate-limit')
 
 const { sequelize } = require('./config/database')
+// Import all models to register them in correct order
+const { User, Company, Project, Collaboration, Message, Contract, MarketplaceItem } = require('./models')
 const setupSocket = require('./socket')
 
 // Routes
@@ -91,7 +93,14 @@ const start = async () => {
   try {
     await sequelize.authenticate()
     console.log('✅ Database connected')
-    await sequelize.sync({ alter: process.env.NODE_ENV === 'development' })
+    // Sync in correct dependency order
+    await Company.sync({ alter: true })
+    await User.sync({ alter: true })
+    await Project.sync({ alter: true })
+    await Collaboration.sync({ alter: true })
+    await Message.sync({ alter: true })
+    await Contract.sync({ alter: true })
+    await MarketplaceItem.sync({ alter: true })
     console.log('✅ Models synced')
     httpServer.listen(PORT, () => {
       console.log(`🚀 Necha API running on http://localhost:${PORT}`)
