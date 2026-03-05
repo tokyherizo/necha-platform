@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { FileText, Plus, Search, Eye, PenLine, Archive, Clock, CheckCircle, AlertCircle } from 'lucide-react'
 import { CONTRACT_STATUS_COLORS, formatDate } from '@/utils/helpers'
+import { useTranslation } from '@/i18n/useTranslation'
 
 const mockContracts = [
   { id: 'CTR-001', title: 'AI Supply Chain Partnership Agreement', parties: ['Your Company', 'DataBridge Labs'], status: 'signed', value: '$250,000', created: '2025-10-15', signed: '2025-10-20', expires: '2026-10-20', type: 'Partnership' },
@@ -24,6 +25,7 @@ export default function ContractsPage() {
   const [query, setQuery] = useState('')
   const [statusFilter, setStatusFilter] = useState('all')
   const [showCreate, setShowCreate] = useState(false)
+  const { t } = useTranslation()
 
   const filtered = mockContracts.filter(c => {
     if (query && !c.title.toLowerCase().includes(query.toLowerCase())) return false
@@ -36,24 +38,24 @@ export default function ContractsPage() {
       {/* Header */}
       <div className="flex items-center justify-between flex-wrap gap-4">
         <div>
-          <h1 className="text-2xl font-black text-white">Digital Contracts</h1>
-          <p className="text-slate-400 text-sm mt-1">Create, sign, and manage business agreements</p>
+          <h1 className="text-2xl font-black text-white">{t.contracts.title}</h1>
+          <p className="text-slate-400 text-sm mt-1">{t.contracts.subtitle}</p>
         </div>
         <button
           onClick={() => setShowCreate(true)}
           className="btn-primary flex items-center gap-2 text-sm"
         >
-          <Plus size={16} /> New Contract
+          <Plus size={16} /> {t.contracts.newContract}
         </button>
       </div>
 
       {/* Stat cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {[
-          { label: 'Total Contracts', value: mockContracts.length, color: 'text-primary-400', bg: 'bg-primary-500/10' },
-          { label: 'Active/Signed', value: mockContracts.filter(c => ['active','signed'].includes(c.status)).length, color: 'text-green-400', bg: 'bg-green-500/10' },
-          { label: 'Pending Signature', value: mockContracts.filter(c => c.status === 'pending').length, color: 'text-yellow-400', bg: 'bg-yellow-500/10' },
-          { label: 'Total Value', value: '$877K', color: 'text-secondary-400', bg: 'bg-secondary-500/10' },
+          { label: t.contracts.totalContracts, value: mockContracts.length, color: 'text-primary-400', bg: 'bg-primary-500/10' },
+          { label: t.contracts.activeSigned, value: mockContracts.filter(c => ['active','signed'].includes(c.status)).length, color: 'text-green-400', bg: 'bg-green-500/10' },
+          { label: t.contracts.pendingSignature, value: mockContracts.filter(c => c.status === 'pending').length, color: 'text-yellow-400', bg: 'bg-yellow-500/10' },
+          { label: t.contracts.totalValue, value: '$877K', color: 'text-secondary-400', bg: 'bg-secondary-500/10' },
         ].map(({ label, value, color, bg }) => (
           <div key={label} className="stat-card">
             <p className={`text-2xl font-black ${color} mb-1`}>{value}</p>
@@ -66,7 +68,7 @@ export default function ContractsPage() {
       <div className="flex gap-3 flex-wrap">
         <div className="relative flex-1 min-w-48">
           <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
-          <input value={query} onChange={e => setQuery(e.target.value)} placeholder="Search contracts..." className="input-dark pl-9 text-sm py-2.5" />
+          <input value={query} onChange={e => setQuery(e.target.value)} placeholder={t.contracts.searchPlaceholder} className="input-dark pl-9 text-sm py-2.5" />
         </div>
         <div className="flex gap-2">
           {['all', 'active', 'signed', 'pending', 'draft'].map(status => (
@@ -77,7 +79,7 @@ export default function ContractsPage() {
                 statusFilter === status ? 'bg-primary-600/20 text-primary-400 border border-primary-500/30' : 'text-slate-400 hover:text-white hover:bg-white/5 border border-transparent'
               }`}
             >
-              {status}
+              {status === 'all' ? t.contracts.statusAll : status === 'active' ? t.contracts.statusActive : status === 'signed' ? t.contracts.statusSigned : status === 'pending' ? t.contracts.statusPending : t.contracts.statusDraft}
             </button>
           ))}
         </div>
@@ -88,13 +90,13 @@ export default function ContractsPage() {
         <table className="table-dark">
           <thead>
             <tr>
-              <th>Contract</th>
-              <th>Type</th>
-              <th>Parties</th>
-              <th>Value</th>
-              <th>Status</th>
-              <th>Date</th>
-              <th>Actions</th>
+              <th>{t.contracts.colContract}</th>
+              <th>{t.contracts.colType}</th>
+              <th>{t.contracts.colParties}</th>
+              <th>{t.contracts.colValue}</th>
+              <th>{t.contracts.colStatus}</th>
+              <th>{t.contracts.colDate}</th>
+              <th>{t.contracts.colActions}</th>
             </tr>
           </thead>
           <tbody>
@@ -159,7 +161,7 @@ export default function ContractsPage() {
         {filtered.length === 0 && (
           <div className="text-center py-16">
             <FileText size={40} className="text-slate-700 mx-auto mb-3" />
-            <p className="text-slate-400">No contracts found</p>
+            <p className="text-slate-400">{t.contracts.noContracts}</p>
           </div>
         )}
       </div>

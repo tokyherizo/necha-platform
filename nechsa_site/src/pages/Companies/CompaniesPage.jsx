@@ -3,6 +3,7 @@ import { Link, useSearchParams } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { Search, Filter, Building2, MapPin, Globe, Shield, Users, ChevronRight, SlidersHorizontal, X } from 'lucide-react'
 import { SECTORS, COMPANY_SIZES, getInitials } from '@/utils/helpers'
+import { useTranslation } from '@/i18n/useTranslation'
 
 // Mock companies — replaced by API
 const mockCompanies = [
@@ -24,6 +25,7 @@ export default function CompaniesPage() {
   const [selectedSize, setSelectedSize] = useState('')
   const [verifiedOnly, setVerifiedOnly] = useState(false)
   const [showFilters, setShowFilters] = useState(false)
+  const { t } = useTranslation()
 
   const filtered = mockCompanies.filter(c => {
     if (query && !c.name.toLowerCase().includes(query.toLowerCase()) &&
@@ -45,10 +47,10 @@ export default function CompaniesPage() {
             animate={{ opacity: 1, y: 0 }}
             className="text-4xl font-black text-white mb-3"
           >
-            Discover Companies
+            {t.companies.title}
           </motion.h1>
           <p className="text-slate-400 text-lg mb-8">
-            Connect with {mockCompanies.length.toLocaleString()}+ verified businesses worldwide
+            {t.companies.connectWith} {mockCompanies.length.toLocaleString()}+ {t.companies.subtitle}
           </p>
 
           {/* Search */}
@@ -59,7 +61,7 @@ export default function CompaniesPage() {
                 type="text"
                 value={query}
                 onChange={e => setQuery(e.target.value)}
-                placeholder="Search by name, sector, technology..."
+                placeholder={t.companies.searchPlaceholder}
                 className="w-full bg-dark-700 border border-white/10 rounded-xl pl-12 pr-4 py-3.5 text-white placeholder-slate-500 focus:outline-none focus:border-primary-500/50 text-sm"
               />
               {query && (
@@ -75,7 +77,7 @@ export default function CompaniesPage() {
               }`}
             >
               <SlidersHorizontal size={16} />
-              Filters
+              {t.companies.filters}
             </button>
           </div>
 
@@ -87,25 +89,25 @@ export default function CompaniesPage() {
               className="mt-4 p-4 bg-dark-700/50 rounded-xl border border-white/5 flex flex-wrap gap-4"
             >
               <div>
-                <label className="text-xs text-slate-400 mb-1.5 block">Sector</label>
+                <label className="text-xs text-slate-400 mb-1.5 block">{t.companies.sector}</label>
                 <select
                   value={selectedSector}
                   onChange={e => setSelectedSector(e.target.value)}
                   className="bg-dark-600 border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-primary-500/50"
                 >
-                  <option value="">All sectors</option>
+                  <option value="">{t.companies.allSectors}</option>
                   {SECTORS.map(s => <option key={s} value={s}>{s}</option>)}
                 </select>
               </div>
               <div>
-                <label className="text-xs text-slate-400 mb-1.5 block">Company Size</label>
+                <label className="text-xs text-slate-400 mb-1.5 block">{t.companies.companySize}</label>
                 <select
                   value={selectedSize}
                   onChange={e => setSelectedSize(e.target.value)}
                   className="bg-dark-600 border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-primary-500/50"
                 >
-                  <option value="">Any size</option>
-                  {COMPANY_SIZES.map(s => <option key={s} value={s}>{s} employees</option>)}
+                  <option value="">{t.companies.anySize}</option>
+                  {COMPANY_SIZES.map(s => <option key={s} value={s}>{s} {t.companies.employees2}</option>)}
                 </select>
               </div>
               <div className="flex items-end">
@@ -117,7 +119,7 @@ export default function CompaniesPage() {
                     className="w-4 h-4 accent-primary-500 rounded"
                   />
                   <span className="text-slate-300 text-sm flex items-center gap-1">
-                    <Shield size={14} className="text-primary-400" /> Verified only
+                    <Shield size={14} className="text-primary-400" /> {t.companies.verifiedOnly}
                   </span>
                 </label>
               </div>
@@ -127,7 +129,7 @@ export default function CompaniesPage() {
                     onClick={() => { setSelectedSector(''); setSelectedSize(''); setVerifiedOnly(false) }}
                     className="text-slate-400 hover:text-white text-sm flex items-center gap-1"
                   >
-                    <X size={14} /> Clear filters
+                    <X size={14} /> {t.companies.clearFilters}
                   </button>
                 </div>
               )}
@@ -139,7 +141,7 @@ export default function CompaniesPage() {
       {/* Results */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <p className="text-slate-400 text-sm mb-6">
-          Showing <strong className="text-white">{filtered.length}</strong> companies
+          {t.companies.showing} <strong className="text-white">{filtered.length}</strong> {t.companies.companiesCount}
         </p>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -183,7 +185,7 @@ export default function CompaniesPage() {
                 </div>
 
                 <div className="flex items-center justify-between text-xs text-slate-400 pt-3 border-t border-white/5">
-                  <div className="flex items-center gap-1"><Users size={12} />{company.size} employees</div>
+                  <div className="flex items-center gap-1"><Users size={12} />{company.size} {t.companies.employees}</div>
                   <div className="flex items-center gap-1 text-yellow-400">
                     ★ {company.score}
                   </div>
@@ -197,8 +199,8 @@ export default function CompaniesPage() {
         {filtered.length === 0 && (
           <div className="text-center py-20">
             <Building2 size={48} className="text-slate-700 mx-auto mb-4" />
-            <p className="text-slate-400 text-lg font-medium">No companies found</p>
-            <p className="text-slate-500 text-sm mt-1">Try adjusting your search or filters</p>
+            <p className="text-slate-400 text-lg font-medium">{t.companies.noCompanies}</p>
+            <p className="text-slate-500 text-sm mt-1">{t.companies.adjustFilters}</p>
           </div>
         )}
       </div>

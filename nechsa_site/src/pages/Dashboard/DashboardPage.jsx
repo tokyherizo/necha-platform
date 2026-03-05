@@ -6,17 +6,11 @@ import {
   Clock, AlertCircle,
 } from 'lucide-react'
 import { useAuthStore } from '@/store/authStore'
+import { useTranslation } from '@/i18n/useTranslation'
 import { formatRelativeTime, formatCurrency, PROJECT_STATUS_COLORS } from '@/utils/helpers'
 import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts'
 
 // Mock data — replaced by real API calls when backend is connected
-const statsData = [
-  { icon: Building2,    label: 'Partners',       value: '24',  change: '+3 this month',  color: 'text-primary-400',  bg: 'bg-primary-500/10' },
-  { icon: FolderKanban, label: 'Active Projects', value: '8',   change: '2 near deadline', color: 'text-green-400',    bg: 'bg-green-500/10' },
-  { icon: MessageSquare,label: 'Messages',        value: '147', change: '12 unread',       color: 'text-yellow-400',   bg: 'bg-yellow-500/10' },
-  { icon: TrendingUp,   label: 'Opportunities',   value: '36',  change: '+8 new today',    color: 'text-secondary-400',bg: 'bg-secondary-500/10' },
-]
-
 const chartData = [
   { month: 'Sep', partners: 12, projects: 4 },
   { month: 'Oct', partners: 15, projects: 6 },
@@ -34,18 +28,10 @@ const recentProjects = [
   { id: 4, name: 'Healthcare Data Platform', partners: 5, status: 'on_hold', progress: 80, deadline: '2026-03-20' },
 ]
 
-const aiMatches = [
+const aiMatchesData = [
   { id: 1, name: 'QuantumLeap AI', country: '🇺🇸', sector: 'AI', score: 97 },
   { id: 2, name: 'EcoTech Solutions', country: '🇩🇪', sector: 'CleanTech', score: 94 },
   { id: 3, name: 'Pacific Finserv', country: '🇸🇬', sector: 'Fintech', score: 91 },
-]
-
-const activities = [
-  { icon: CheckCircle, text: 'Partnership accepted by TechBridge Inc.', time: '2h ago', color: 'text-green-400' },
-  { icon: FileText,    text: 'Contract #CTR-045 signed by all parties', time: '4h ago', color: 'text-blue-400' },
-  { icon: Users,       text: 'New collaborator joined "AI Project"',     time: '6h ago', color: 'text-primary-400' },
-  { icon: AlertCircle, text: 'Review milestone due: AI Supply Chain',    time: '1d ago', color: 'text-yellow-400' },
-  { icon: Sparkles,    text: '5 new AI-matched partners available',      time: '1d ago', color: 'text-secondary-400' },
 ]
 
 const CustomTooltip = ({ active, payload, label }) => {
@@ -66,6 +52,22 @@ const CustomTooltip = ({ active, payload, label }) => {
 
 export default function DashboardPage() {
   const { user } = useAuthStore()
+  const { t } = useTranslation()
+
+  const statsData = [
+    { icon: Building2,     label: t.dashboard.partners,       value: '24',  change: `+3 ${t.dashboard.thisMonth}`,   color: 'text-primary-400',   bg: 'bg-primary-500/10' },
+    { icon: FolderKanban,  label: t.dashboard.activeProjects, value: '8',   change: `2 ${t.dashboard.nearDeadline}`, color: 'text-green-400',     bg: 'bg-green-500/10' },
+    { icon: MessageSquare, label: t.dashboard.messages,       value: '147', change: `12 ${t.dashboard.unread}`,      color: 'text-yellow-400',    bg: 'bg-yellow-500/10' },
+    { icon: TrendingUp,    label: t.dashboard.opportunities,  value: '36',  change: `+8 ${t.dashboard.newToday}`,   color: 'text-secondary-400', bg: 'bg-secondary-500/10' },
+  ]
+
+  const activities = [
+    { icon: CheckCircle, text: 'Partnership accepted by TechBridge Inc.', time: '2h ago', color: 'text-green-400' },
+    { icon: FileText,    text: 'Contract #CTR-045 signed by all parties', time: '4h ago', color: 'text-blue-400' },
+    { icon: Users,       text: 'New collaborator joined "AI Project"',     time: '6h ago', color: 'text-primary-400' },
+    { icon: AlertCircle, text: 'Review milestone due: AI Supply Chain',    time: '1d ago', color: 'text-yellow-400' },
+    { icon: Sparkles,    text: '5 new AI-matched partners available',      time: '1d ago', color: 'text-secondary-400' },
+  ]
 
   return (
     <div className="space-y-6 animate-fade-in">
@@ -73,15 +75,15 @@ export default function DashboardPage() {
       <div className="flex items-start justify-between flex-wrap gap-4">
         <div>
           <h1 className="text-2xl font-black text-white">
-            Welcome back, {user?.company_name || user?.name} 👋
+            {t.dashboard.welcomeBack}, {user?.company_name || user?.name} 👋
           </h1>
           <p className="text-slate-400 text-sm mt-1">
-            Here's what's happening with your partnerships today.
+            {t.dashboard.todaySummary}
           </p>
         </div>
         <Link to="/projects/create" className="btn-primary flex items-center gap-2 text-sm">
           <Plus size={16} />
-          New Project
+          {t.dashboard.newProject}
         </Link>
       </div>
 
@@ -111,8 +113,8 @@ export default function DashboardPage() {
         <div className="lg:col-span-2 glass-card rounded-2xl p-6">
           <div className="flex items-center justify-between mb-6">
             <div>
-              <h2 className="text-white font-bold">Partnership Growth</h2>
-              <p className="text-slate-400 text-xs mt-0.5">Partners & projects over 7 months</p>
+              <h2 className="text-white font-bold">{t.dashboard.partnerGrowth}</h2>
+              <p className="text-slate-400 text-xs mt-0.5">{t.dashboard.growthSubtitle}</p>
             </div>
             <span className="text-xs text-green-400 font-semibold bg-green-500/10 border border-green-500/30 px-2.5 py-1 rounded-full">
               +100% YoY
@@ -144,14 +146,14 @@ export default function DashboardPage() {
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
               <Sparkles size={16} className="text-primary-400" />
-              <h2 className="text-white font-bold text-sm">AI Matches</h2>
+              <h2 className="text-white font-bold text-sm">{t.dashboard.aiMatches}</h2>
             </div>
             <Link to="/matching" className="text-primary-400 hover:text-primary-300 text-xs font-medium">
-              View all
+              {t.dashboard.viewAll}
             </Link>
           </div>
           <div className="space-y-3">
-            {aiMatches.map(m => (
+            {aiMatchesData.map(m => (
               <div key={m.id} className="flex items-center gap-3 p-3 bg-dark-700/50 rounded-xl hover:bg-dark-700 transition cursor-pointer">
                 <div className="w-10 h-10 bg-gradient-to-br from-primary-600/30 to-secondary-600/30 rounded-xl flex items-center justify-center flex-shrink-0">
                   <span>{m.country}</span>
@@ -170,7 +172,7 @@ export default function DashboardPage() {
             to="/matching"
             className="mt-4 w-full flex items-center justify-center gap-2 text-primary-400 hover:text-white text-sm font-medium py-2.5 border border-primary-500/30 hover:border-primary-500 rounded-xl transition"
           >
-            See all matches <ArrowRight size={14} />
+            {t.dashboard.seeAllMatches} <ArrowRight size={14} />
           </Link>
         </div>
       </div>
@@ -180,9 +182,9 @@ export default function DashboardPage() {
         {/* Recent projects */}
         <div className="lg:col-span-2 glass-card rounded-2xl p-6">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-white font-bold">Active Projects</h2>
+            <h2 className="text-white font-bold">{t.dashboard.activeProjectsTitle}</h2>
             <Link to="/projects" className="text-primary-400 hover:text-primary-300 text-xs font-medium flex items-center gap-1">
-              View all <ChevronRight size={14} />
+              {t.dashboard.viewAll} <ChevronRight size={14} />
             </Link>
           </div>
           <div className="space-y-4">
@@ -195,8 +197,8 @@ export default function DashboardPage() {
                   </span>
                 </div>
                 <div className="flex items-center gap-4 text-xs text-slate-400 mb-3">
-                  <span className="flex items-center gap-1"><Users size={12} />{project.partners} partners</span>
-                  <span className="flex items-center gap-1"><Clock size={12} />Due {project.deadline}</span>
+                  <span className="flex items-center gap-1"><Users size={12} />{project.partners} {t.dashboard.partners2}</span>
+                  <span className="flex items-center gap-1"><Clock size={12} />{t.dashboard.due} {project.deadline}</span>
                 </div>
                 <div className="flex items-center gap-3">
                   <div className="flex-1 h-1.5 bg-dark-600 rounded-full overflow-hidden">
@@ -214,7 +216,7 @@ export default function DashboardPage() {
 
         {/* Activity feed */}
         <div className="glass-card rounded-2xl p-6">
-          <h2 className="text-white font-bold mb-4">Recent Activity</h2>
+          <h2 className="text-white font-bold mb-4">{t.dashboard.recentActivity}</h2>
           <div className="space-y-4">
             {activities.map(({ icon: Icon, text, time, color }, i) => (
               <div key={i} className="flex items-start gap-3">

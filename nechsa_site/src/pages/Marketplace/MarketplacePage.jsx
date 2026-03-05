@@ -1,14 +1,15 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Search, ShoppingBag, Star, Globe, Code, Brain, Cloud, CreditCard, Plus } from 'lucide-react'
+import { useTranslation } from '@/i18n/useTranslation'
 
 const categories = [
-  { id: 'all', label: 'All', icon: ShoppingBag },
-  { id: 'api', label: 'APIs', icon: Code },
-  { id: 'ai', label: 'AI Services', icon: Brain },
-  { id: 'cloud', label: 'Cloud', icon: Cloud },
-  { id: 'fintech', label: 'Fintech', icon: CreditCard },
-  { id: 'consulting', label: 'Consulting', icon: Globe },
+  { id: 'all', icon: ShoppingBag },
+  { id: 'api', icon: Code },
+  { id: 'ai', icon: Brain },
+  { id: 'cloud', icon: Cloud },
+  { id: 'fintech', icon: CreditCard },
+  { id: 'consulting', icon: Globe },
 ]
 
 const mockItems = [
@@ -31,6 +32,16 @@ const badgeColors = {
 export default function MarketplacePage() {
   const [query, setQuery] = useState('')
   const [category, setCategory] = useState('all')
+  const { t } = useTranslation()
+
+  const catLabels = {
+    all: t.marketplace.catAll,
+    api: t.marketplace.catApis,
+    ai: t.marketplace.catAi,
+    cloud: t.marketplace.catCloud,
+    fintech: t.marketplace.catFintech,
+    consulting: t.marketplace.catConsulting,
+  }
 
   const filtered = mockItems.filter(item => {
     if (category !== 'all' && item.category !== category) return false
@@ -44,15 +55,15 @@ export default function MarketplacePage() {
       <div className="bg-dark-800/50 border-b border-white/5 py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-            <h1 className="text-4xl font-black text-white mb-3">Resource Marketplace</h1>
-            <p className="text-slate-400 text-lg mb-8">Discover and share APIs, technologies, and expert services</p>
+            <h1 className="text-4xl font-black text-white mb-3">{t.marketplace.title}</h1>
+            <p className="text-slate-400 text-lg mb-8">{t.marketplace.subtitle}</p>
             <div className="flex gap-3 flex-wrap">
               <div className="relative flex-1 max-w-2xl">
                 <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" />
-                <input value={query} onChange={e => setQuery(e.target.value)} placeholder="Search services, APIs, technologies..." className="w-full bg-dark-700 border border-white/10 rounded-xl pl-12 pr-4 py-3.5 text-white placeholder-slate-500 focus:outline-none focus:border-primary-500/50 text-sm" />
+                <input value={query} onChange={e => setQuery(e.target.value)} placeholder={t.marketplace.searchPlaceholder} className="w-full bg-dark-700 border border-white/10 rounded-xl pl-12 pr-4 py-3.5 text-white placeholder-slate-500 focus:outline-none focus:border-primary-500/50 text-sm" />
               </div>
               <button className="btn-primary flex items-center gap-2 text-sm">
-                <Plus size={16} /> List Your Service
+                <Plus size={16} /> {t.marketplace.listService}
               </button>
             </div>
           </motion.div>
@@ -62,7 +73,7 @@ export default function MarketplacePage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Category tabs */}
         <div className="flex gap-2 flex-wrap mb-8">
-          {categories.map(({ id, label, icon: Icon }) => (
+          {categories.map(({ id, icon: Icon }) => (
             <button
               key={id}
               onClick={() => setCategory(id)}
@@ -70,7 +81,7 @@ export default function MarketplacePage() {
                 category === id ? 'bg-primary-600/20 text-primary-400 border border-primary-500/30' : 'text-slate-400 hover:text-white border border-white/5 hover:border-white/10'
               }`}
             >
-              <Icon size={14} /> {label}
+              <Icon size={14} /> {catLabels[id]}
             </button>
           ))}
         </div>
@@ -115,7 +126,7 @@ export default function MarketplacePage() {
               </div>
 
               <button className="mt-3 w-full text-center text-sm font-semibold py-2 rounded-lg border border-primary-500/30 text-primary-400 hover:bg-primary-600/10 hover:border-primary-500 transition">
-                Get Access
+                {t.marketplace.getAccess}
               </button>
             </motion.div>
           ))}
@@ -124,7 +135,7 @@ export default function MarketplacePage() {
         {filtered.length === 0 && (
           <div className="text-center py-20">
             <ShoppingBag size={48} className="text-slate-700 mx-auto mb-4" />
-            <p className="text-slate-400 text-lg">No services found matching your search</p>
+            <p className="text-slate-400 text-lg">{t.marketplace.noServices}</p>
           </div>
         )}
       </div>

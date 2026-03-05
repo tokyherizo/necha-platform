@@ -2,6 +2,7 @@ import { motion } from 'framer-motion'
 import { useInView } from 'framer-motion'
 import { useRef } from 'react'
 import { Star } from 'lucide-react'
+import { useTranslation } from '@/i18n/useTranslation'
 
 const testimonials = [
   {
@@ -69,6 +70,7 @@ const testimonials = [
 export default function TestimonialsSection() {
   const ref = useRef(null)
   const inView = useInView(ref, { once: true, margin: '-100px' })
+  const { t } = useTranslation()
 
   return (
     <section ref={ref} className="py-24 bg-dark-800/30">
@@ -79,10 +81,10 @@ export default function TestimonialsSection() {
           className="text-center mb-16"
         >
           <span className="text-primary-400 text-sm font-semibold uppercase tracking-widest mb-3 block">
-            Trusted worldwide
+            {t.landing.testimonials.tag}
           </span>
           <h2 className="text-4xl lg:text-5xl font-black text-white mb-5">
-            Businesses love <span className="gradient-text">Necha</span>
+            {t.landing.testimonials.title}
           </h2>
           <div className="flex items-center justify-center gap-1 mb-2">
             {[...Array(5)].map((_, i) => (

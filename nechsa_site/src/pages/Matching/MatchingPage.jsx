@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Sparkles, Target, TrendingUp, Users, MessageSquare, Handshake, RefreshCw, Filter, Globe } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import { useTranslation } from '@/i18n/useTranslation'
 
 const mockMatches = [
   {
@@ -51,6 +52,7 @@ const mockMatches = [
 export default function MatchingPage() {
   const [loading, setLoading] = useState(false)
   const [expanded, setExpanded] = useState(null)
+  const { t } = useTranslation()
 
   const refresh = () => {
     setLoading(true)
@@ -69,12 +71,12 @@ export default function MatchingPage() {
       <div className="flex items-center justify-between flex-wrap gap-4">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <h1 className="text-2xl font-black text-white">AI Matching</h1>
+            <h1 className="text-2xl font-black text-white">{t.matching.title}</h1>
             <span className="text-xs font-semibold bg-primary-600/20 text-primary-400 border border-primary-500/30 px-2.5 py-0.5 rounded-full">
-              Powered by ML
+              {t.matching.poweredML}
             </span>
           </div>
-          <p className="text-slate-400 text-sm">Companies our AI recommends as your best potential partners</p>
+          <p className="text-slate-400 text-sm">{t.matching.subtitle}</p>
         </div>
         <button
           onClick={refresh}
@@ -82,7 +84,7 @@ export default function MatchingPage() {
           className="flex items-center gap-2 border border-white/10 hover:border-primary-500/50 text-slate-400 hover:text-white px-4 py-2 rounded-lg text-sm font-medium transition"
         >
           <RefreshCw size={15} className={loading ? 'animate-spin' : ''} />
-          Refresh Matches
+          {t.matching.refreshMatches}
         </button>
       </div>
 
@@ -97,16 +99,16 @@ export default function MatchingPage() {
             <Sparkles size={22} className="text-white" />
           </div>
           <div>
-            <h2 className="text-white font-bold mb-1">AI Analysis Complete</h2>
+            <h2 className="text-white font-bold mb-1">{t.matching.aiSummary}</h2>
             <p className="text-slate-400 text-sm leading-relaxed">
-              Based on your company profile, sector (Technology), existing partnerships, and strategic goals, our AI has analyzed <strong className="text-white">10,247 companies</strong> and identified <strong className="text-white">{mockMatches.length} high-compatibility matches</strong>. 
+              Based on your company profile, sector (Technology), existing partnerships, and strategic goals, our AI has {t.matching.analyzed} <strong className="text-white">10,247 companies</strong> and {t.matching.identified} <strong className="text-white">{mockMatches.length} {t.matching.identified}</strong>. 
               Top opportunities include investment prospects, technology exchange partnerships, and joint venture candidates in AI, Clean Tech, and FinTech sectors.
             </p>
             <div className="flex gap-4 mt-3">
               {[
-                { icon: Target, text: '94% avg match accuracy' },
-                { icon: Globe, text: '6 countries represented' },
-                { icon: Users, text: '3 investment opportunities' },
+              { icon: Target, text: `94% ${t.matching.avgAccuracy}` },
+                { icon: Globe, text: `6 ${t.matching.countriesRep}` },
+                { icon: Users, text: `3 ${t.matching.investOpps}` },
               ].map(({ icon: Icon, text }) => (
                 <div key={text} className="flex items-center gap-1.5 text-xs text-slate-400">
                   <Icon size={12} className="text-primary-400" />
@@ -139,11 +141,11 @@ export default function MatchingPage() {
                 <div className="flex items-start justify-between gap-3 flex-wrap">
                   <div>
                     <h3 className="text-white font-bold text-lg">{match.name}</h3>
-                    <p className="text-slate-400 text-sm">{match.country} · {match.sector} · {match.size} employees</p>
+                    <p className="text-slate-400 text-sm">{match.country} · {match.sector} · {match.size} {t.matching.employees || 'employees'}</p>
                   </div>
                   <div className="flex items-center gap-3">
                     <span className={`text-sm font-black px-3 py-1 rounded-full border ${getScoreColor(match.score)}`}>
-                      {match.score}% match
+                      {match.score}% {t.matching.match}
                     </span>
                   </div>
                 </div>
@@ -165,12 +167,12 @@ export default function MatchingPage() {
                 {/* Why match */}
                 <div className="flex items-start gap-2 mb-3 p-3 bg-primary-600/5 border border-primary-500/20 rounded-lg">
                   <Sparkles size={13} className="text-primary-400 flex-shrink-0 mt-0.5" />
-                  <p className="text-slate-300 text-xs"><strong className="text-primary-400">Why you match:</strong> {match.whyMatch}</p>
+                  <p className="text-slate-300 text-xs"><strong className="text-primary-400">{t.matching.whyMatch}</strong> {match.whyMatch}</p>
                 </div>
 
                 {/* Strengths */}
                 <div className="flex items-center gap-2 flex-wrap mb-4">
-                  <span className="text-slate-500 text-xs">Strengths:</span>
+                  <span className="text-slate-500 text-xs">{t.matching.strengths}</span>
                   {match.strengths.map(s => (
                     <span key={s} className="text-xs bg-dark-600 text-slate-400 border border-white/5 px-2 py-0.5 rounded">{s}</span>
                   ))}
@@ -179,13 +181,13 @@ export default function MatchingPage() {
                 {/* Actions */}
                 <div className="flex items-center gap-3">
                   <Link to={`/company/${match.id}`} className="btn-secondary text-sm py-2 px-4">
-                    View Profile
+                    {t.matching.viewProfile}
                   </Link>
                   <Link to={`/messages?to=${match.id}`} className="btn-primary text-sm py-2 px-4 flex items-center gap-1.5">
-                    <MessageSquare size={14} /> Connect
+                    <MessageSquare size={14} /> {t.matching.connect}
                   </Link>
                   <button className="flex items-center gap-1.5 text-slate-400 hover:text-white text-sm px-4 py-2 border border-white/10 hover:border-white/20 rounded-lg transition">
-                    <Handshake size={14} /> Propose Partnership
+                    <Handshake size={14} /> {t.matching.propose}
                   </button>
                 </div>
               </div>

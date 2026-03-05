@@ -1,17 +1,21 @@
 import { motion } from 'framer-motion'
 import { useInView } from 'framer-motion'
 import { useRef } from 'react'
+import { useTranslation } from '@/i18n/useTranslation'
 
-const stats = [
-  { value: '10K+', label: 'Verified Companies', color: 'from-primary-500 to-blue-500' },
-  { value: '150+', label: 'Countries', color: 'from-secondary-500 to-pink-500' },
-  { value: '25K+', label: 'Projects Launched', color: 'from-green-500 to-emerald-500' },
-  { value: '$2B+', label: 'Deals Facilitated', color: 'from-yellow-500 to-orange-500' },
+const statValues = [
+  { value: '10K+', color: 'from-primary-500 to-blue-500' },
+  { value: '150+', color: 'from-secondary-500 to-pink-500' },
+  { value: '25K+', color: 'from-green-500 to-emerald-500' },
+  { value: '$2B+', color: 'from-yellow-500 to-orange-500' },
 ]
 
 export default function StatsSection() {
   const ref = useRef(null)
   const inView = useInView(ref, { once: true, margin: '-100px' })
+  const { t } = useTranslation()
+  const statLabels = [t.landing.stats.companies, t.landing.stats.countries, t.landing.stats.projects, t.landing.stats.deals]
+  const stats = statValues.map((s, i) => ({ ...s, label: statLabels[i] }))
 
   return (
     <section ref={ref} className="py-16 border-y border-white/5 bg-dark-800/50">

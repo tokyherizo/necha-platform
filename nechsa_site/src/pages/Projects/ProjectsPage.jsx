@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { Plus, Search, FolderKanban, Users, Clock, Target, Filter } from 'lucide-react'
 import { PROJECT_STATUS_COLORS, formatDate } from '@/utils/helpers'
+import { useTranslation } from '@/i18n/useTranslation'
 
 const mockProjects = [
   { id: 1, name: 'AI Supply Chain Optimization', description: 'Building ML models to optimize global supply chain routing and inventory management.', sector: 'Technology', budget: '$250K', duration: '6 months', status: 'active', progress: 65, skills: ['Python', 'ML', 'Data Science'], partners: 3, owner: 'Your Company', deadline: '2026-04-15', created: '2025-10-01' },
@@ -15,6 +16,7 @@ const mockProjects = [
 export default function ProjectsPage() {
   const [query, setQuery] = useState('')
   const [statusFilter, setStatusFilter] = useState('all')
+  const { t } = useTranslation()
 
   const filtered = mockProjects.filter(p => {
     if (query && !p.name.toLowerCase().includes(query.toLowerCase()) && !p.description.toLowerCase().includes(query.toLowerCase())) return false
@@ -27,11 +29,11 @@ export default function ProjectsPage() {
       {/* Header */}
       <div className="flex items-center justify-between flex-wrap gap-4">
         <div>
-          <h1 className="text-2xl font-black text-white">Projects</h1>
-          <p className="text-slate-400 text-sm mt-1">Manage your collaborative projects</p>
+          <h1 className="text-2xl font-black text-white">{t.projects.title}</h1>
+          <p className="text-slate-400 text-sm mt-1">{t.projects.subtitle}</p>
         </div>
         <Link to="/projects/create" className="btn-primary flex items-center gap-2 text-sm">
-          <Plus size={16} /> New Project
+          <Plus size={16} /> {t.projects.newProject}
         </Link>
       </div>
 
@@ -39,7 +41,7 @@ export default function ProjectsPage() {
       <div className="flex gap-3 flex-wrap">
         <div className="relative flex-1 min-w-48">
           <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
-          <input value={query} onChange={e => setQuery(e.target.value)} placeholder="Search projects..." className="input-dark pl-9 text-sm py-2.5" />
+          <input value={query} onChange={e => setQuery(e.target.value)} placeholder={t.projects.searchPlaceholder} className="input-dark pl-9 text-sm py-2.5" />
         </div>
         <div className="flex gap-2">
           {['all', 'active', 'planning', 'on_hold', 'completed'].map(status => (
@@ -50,7 +52,7 @@ export default function ProjectsPage() {
                 statusFilter === status ? 'bg-primary-600/20 text-primary-400 border border-primary-500/30' : 'text-slate-400 hover:text-white hover:bg-white/5 border border-transparent'
               }`}
             >
-              {status === 'all' ? 'All' : status.replace('_', ' ')}
+              {status === 'all' ? t.projects.statusAll : status === 'active' ? t.projects.statusActive : status === 'planning' ? t.projects.statusPlanning : status === 'on_hold' ? t.projects.statusOnHold : t.projects.statusCompleted}
             </button>
           ))}
         </div>
@@ -83,7 +85,7 @@ export default function ProjectsPage() {
               {/* Progress */}
               <div className="mb-4">
                 <div className="flex justify-between text-xs mb-1.5">
-                  <span className="text-slate-400">Progress</span>
+                  <span className="text-slate-400">{t.projects.progress}</span>
                   <span className="text-white font-semibold">{project.progress}%</span>
                 </div>
                 <div className="h-1.5 bg-dark-600 rounded-full overflow-hidden">
@@ -93,9 +95,9 @@ export default function ProjectsPage() {
 
               {/* Footer */}
               <div className="flex items-center gap-4 text-xs text-slate-400 pt-3 border-t border-white/5">
-                <span className="flex items-center gap-1"><Users size={12} />{project.partners} partners</span>
+                <span className="flex items-center gap-1"><Users size={12} />{project.partners} {t.projects.partners}</span>
                 <span className="flex items-center gap-1"><Target size={12} />{project.budget}</span>
-                <span className="flex items-center gap-1"><Clock size={12} />Due {project.deadline}</span>
+                <span className="flex items-center gap-1"><Clock size={12} />{t.projects.due} {project.deadline}</span>
               </div>
             </Link>
           </motion.div>
@@ -105,9 +107,9 @@ export default function ProjectsPage() {
       {filtered.length === 0 && (
         <div className="text-center py-20 glass-card rounded-2xl">
           <FolderKanban size={48} className="text-slate-700 mx-auto mb-4" />
-          <p className="text-slate-400 text-lg font-medium">No projects found</p>
+          <p className="text-slate-400 text-lg font-medium">{t.projects.noProjects}</p>
           <Link to="/projects/create" className="btn-primary inline-flex items-center gap-2 mt-4 text-sm">
-            <Plus size={16} /> Create your first project
+            <Plus size={16} /> {t.projects.createFirst}
           </Link>
         </div>
       )}

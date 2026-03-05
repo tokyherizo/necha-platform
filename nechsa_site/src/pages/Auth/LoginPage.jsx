@@ -8,6 +8,7 @@ import { motion } from 'framer-motion'
 import toast from 'react-hot-toast'
 import { authAPI } from '@/services/api'
 import { useAuthStore } from '@/store/authStore'
+import { useTranslation } from '@/i18n/useTranslation'
 
 const schema = z.object({
   email: z.string().email('Invalid email address'),
@@ -18,6 +19,7 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
   const { login } = useAuthStore()
+  const { t } = useTranslation()
   const navigate = useNavigate()
 
   const { register, handleSubmit, formState: { errors } } = useForm({
@@ -29,10 +31,10 @@ export default function LoginPage() {
     try {
       const res = await authAPI.login(data)
       login(res.data.user, res.data.token)
-      toast.success('Welcome back!')
+      toast.success(t.auth.login.successMsg)
       navigate('/dashboard')
     } catch (err) {
-      toast.error(err.response?.data?.message || 'Invalid credentials')
+      toast.error(err.response?.data?.message || t.auth.login.errorMsg)
     } finally {
       setLoading(false)
     }
@@ -46,7 +48,7 @@ export default function LoginPage() {
         { id: 'demo', name: 'Demo User', email: 'demo@necha.io', company_name: 'Necha Demo Corp', role: 'company' },
         'demo-token-xxxx'
       )
-      toast.success('Welcome to Necha Demo!')
+      toast.success(t.auth.login.demoWelcome)
       navigate('/dashboard')
       setLoading(false)
     }, 800)
@@ -58,13 +60,13 @@ export default function LoginPage() {
       animate={{ opacity: 1, y: 0 }}
       className="glass-card rounded-2xl p-8"
     >
-      <h1 className="text-2xl font-bold text-white mb-1">Welcome back</h1>
-      <p className="text-slate-400 text-sm mb-6">Sign in to your Necha account</p>
+      <h1 className="text-2xl font-bold text-white mb-1">{t.auth.login.title}</h1>
+      <p className="text-slate-400 text-sm mb-6">{t.auth.login.subtitle}</p>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         {/* Email */}
         <div>
-          <label className="block text-sm font-medium text-slate-300 mb-1.5">Email address</label>
+          <label className="block text-sm font-medium text-slate-300 mb-1.5">{t.auth.login.email}</label>
           <div className="relative">
             <Mail size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
             <input
@@ -80,9 +82,9 @@ export default function LoginPage() {
         {/* Password */}
         <div>
           <div className="flex items-center justify-between mb-1.5">
-            <label className="block text-sm font-medium text-slate-300">Password</label>
+            <label className="block text-sm font-medium text-slate-300">{t.auth.login.password}</label>
             <Link to="/forgot-password" className="text-xs text-primary-400 hover:text-primary-300">
-              Forgot password?
+              {t.auth.login.forgot}
             </Link>
           </div>
           <div className="relative">
@@ -111,7 +113,7 @@ export default function LoginPage() {
           className="w-full btn-primary flex items-center justify-center gap-2 mt-2"
         >
           {loading ? <Loader2 size={18} className="animate-spin" /> : (
-            <>Sign in <ArrowRight size={16} /></>
+            <>{t.auth.login.submit} <ArrowRight size={16} /></>
           )}
         </button>
       </form>
@@ -119,7 +121,7 @@ export default function LoginPage() {
       {/* Divider */}
       <div className="flex items-center gap-3 my-5">
         <div className="flex-1 h-px bg-white/5" />
-        <span className="text-slate-500 text-xs">or</span>
+        <span className="text-slate-500 text-xs">{t.auth.login.or}</span>
         <div className="flex-1 h-px bg-white/5" />
       </div>
 
@@ -129,13 +131,13 @@ export default function LoginPage() {
         disabled={loading}
         className="w-full btn-secondary text-sm"
       >
-        Try Demo Account
+        {t.auth.login.tryDemo}
       </button>
 
       <p className="text-center text-slate-400 text-sm mt-6">
-        Don't have an account?{' '}
+        {t.auth.login.noAccount}{' '}
         <Link to="/register" className="text-primary-400 hover:text-primary-300 font-medium">
-          Create one free
+          {t.auth.login.createOne}
         </Link>
       </p>
     </motion.div>

@@ -3,10 +3,12 @@ import { useInView } from 'framer-motion'
 import { useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { ArrowRight, Globe } from 'lucide-react'
+import { useTranslation } from '@/i18n/useTranslation'
 
 export default function CTASection() {
   const ref = useRef(null)
   const inView = useInView(ref, { once: true, margin: '-100px' })
+  const { t } = useTranslation()
 
   return (
     <section ref={ref} className="py-24 bg-dark-800/30">
@@ -28,11 +30,10 @@ export default function CTASection() {
             <Globe size={48} className="text-primary-400 mx-auto mb-6" />
 
             <h2 className="text-4xl lg:text-6xl font-black text-white mb-6">
-              Ready to go{' '}
-              <span className="gradient-text">global?</span>
+              {t.landing.cta.globalTitle}
             </h2>
             <p className="text-slate-400 text-xl mb-10 max-w-2xl mx-auto leading-relaxed">
-              Join thousands of companies already building the future of business together. Your next partnership is one click away.
+              {t.landing.cta.globalSub}
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -40,19 +41,19 @@ export default function CTASection() {
                 to="/register"
                 className="group flex items-center justify-center gap-2 bg-gradient-to-r from-primary-600 to-secondary-600 hover:from-primary-500 hover:to-secondary-500 text-white font-bold px-10 py-4 rounded-xl transition-all duration-300 shadow-lg shadow-primary-500/30 hover:shadow-primary-500/50 text-base"
               >
-                Create Free Company Profile
+                {t.landing.cta.createProfile}
                 <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
               </Link>
               <Link
                 to="/companies"
                 className="flex items-center justify-center font-semibold px-10 py-4 rounded-xl border border-white/10 hover:border-primary-500/50 text-slate-300 hover:text-white transition-all duration-300 hover:bg-white/5 text-base"
               >
-                Browse Companies
+                {t.landing.cta.browseCompanies}
               </Link>
             </div>
 
             <p className="text-slate-500 text-sm mt-6">
-              Free forever · No credit card required · Set up in 5 minutes
+              {t.landing.cta.freeLabel}
             </p>
           </div>
         </motion.div>

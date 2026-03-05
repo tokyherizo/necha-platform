@@ -2,6 +2,7 @@ import { motion } from 'framer-motion'
 import { useInView } from 'framer-motion'
 import { useRef } from 'react'
 import { UserPlus, Search, MessageSquare, FileText, TrendingUp } from 'lucide-react'
+import { useTranslation } from '@/i18n/useTranslation'
 
 const steps = [
   {
@@ -49,6 +50,7 @@ const steps = [
 export default function HowItWorksSection() {
   const ref = useRef(null)
   const inView = useInView(ref, { once: true, margin: '-100px' })
+  const { t } = useTranslation()
 
   return (
     <section ref={ref} className="py-24 bg-dark-800/30">
@@ -59,13 +61,13 @@ export default function HowItWorksSection() {
           className="text-center mb-16"
         >
           <span className="text-primary-400 text-sm font-semibold uppercase tracking-widest mb-3 block">
-            Simple process
+            {t.landing.howItWorks.tag}
           </span>
           <h2 className="text-4xl lg:text-5xl font-black text-white mb-5">
-            How <span className="gradient-text">Necha</span> works
+            {t.landing.howItWorks.title}
           </h2>
           <p className="text-slate-400 text-xl max-w-2xl mx-auto">
-            From sign-up to your first signed partnership in under 30 minutes.
+            {t.landing.howItWorks.desc}
           </p>
         </motion.div>
 

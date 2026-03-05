@@ -321,3 +321,117 @@ html.light .bg-grid {
     linear-gradient(rgba(99, 102, 241, 0.07) 1px, transparent 1px),
     linear-gradient(90deg, rgba(99, 102, 241, 0.07) 1px, transparent 1px);
 }
+
+/* ============================================================
+   COMPREHENSIVE LIGHT MODE — Tailwind utility overrides
+   These cover all hardcoded text-white / bg-dark-* / border-white
+   classes used across every page and component.
+   ============================================================ */
+
+/* --- text colors --- */
+html.light .text-white          { color: #0f172a !important; }
+html.light .text-slate-300      { color: #334155 !important; }
+html.light .text-slate-400      { color: #64748b !important; }
+html.light .text-slate-500      { color: #64748b !important; }
+/* text-slate-700 is already dark (#334155) so no override needed in light mode */
+
+/* --- background colors --- */
+html.light .bg-dark-900         { background-color: #f1f5f9 !important; }
+html.light .bg-dark-800         { background-color: #f8fafc !important; }
+html.light .bg-dark-700         { background-color: #e2e8f0 !important; }
+html.light .bg-dark-600         { background-color: #e2e8f0 !important; }
+html.light .bg-dark-500         { background-color: #cbd5e1 !important; }
+html.light .bg-black            { background-color: #ffffff !important; }
+
+/* bg-dark-* with opacity modifiers */
+html.light .bg-dark-900\/50     { background-color: rgba(241, 245, 249, 0.5) !important; }
+html.light .bg-dark-800\/80     { background-color: rgba(248, 250, 252, 0.8) !important; }
+html.light .bg-dark-700\/40     { background-color: rgba(226, 232, 240, 0.4) !important; }
+html.light .bg-dark-700\/60     { background-color: rgba(226, 232, 240, 0.6) !important; }
+html.light .bg-dark-600\/50     { background-color: rgba(226, 232, 240, 0.5) !important; }
+
+/* --- border colors --- */
+html.light .border-white\/5     { border-color: rgba(0, 0, 0, 0.07) !important; }
+html.light .border-white\/10    { border-color: rgba(0, 0, 0, 0.10) !important; }
+html.light .border-white\/20    { border-color: rgba(0, 0, 0, 0.15) !important; }
+html.light .border-white\/30    { border-color: rgba(0, 0, 0, 0.20) !important; }
+html.light .divide-white\/5 > * + *  { border-color: rgba(0, 0, 0, 0.07) !important; }
+
+/* --- hover states --- */
+html.light .hover\:text-white:hover        { color: #0f172a !important; }
+html.light .hover\:bg-white\/5:hover       { background-color: rgba(0, 0, 0, 0.04) !important; }
+html.light .hover\:bg-white\/10:hover      { background-color: rgba(0, 0, 0, 0.06) !important; }
+html.light .hover\:border-white\/20:hover  { border-color: rgba(0, 0, 0, 0.15) !important; }
+
+/* --- inputs inside dark containers --- */
+html.light input[class*="bg-dark"],
+html.light textarea[class*="bg-dark"],
+html.light select[class*="bg-dark"] {
+  background-color: #f8fafc !important;
+  color: #0f172a !important;
+  border-color: rgba(79, 70, 229, 0.25) !important;
+}
+html.light input::placeholder,
+html.light textarea::placeholder {
+  color: #94a3b8 !important;
+}
+
+/* --- DashboardNavbar / top bar --- */
+html.light [class*="bg-dark-800"][class*="border-white"] {
+  background-color: rgba(248, 250, 252, 0.95) !important;
+  border-color: rgba(0, 0, 0, 0.08) !important;
+}
+
+/* --- Auth page background --- */
+html.light [class*="bg-dark-900"][class*="bg-grid"] {
+  background-color: #f1f5f9 !important;
+}
+
+/* --- Logo "N" badge --- */
+html.light .bg-gradient-to-br .text-white,
+html.light [class*="bg-gradient"] .text-white {
+  color: #ffffff !important;
+}
+
+/* --- Stat number on cards (keep prominent) --- */
+html.light .text-2xl.font-black.text-white,
+html.light .text-3xl.font-black.text-white,
+html.light .text-4xl.font-black.text-white {
+  color: #0f172a !important;
+}
+
+/* --- Keep text WHITE inside gradient buttons (they have dark bg) --- */
+html.light .bg-gradient-to-r.text-white,
+html.light a.bg-gradient-to-r,
+html.light button.bg-gradient-to-r {
+  color: #ffffff !important;
+}
+
+/* --- Navbar search input in light mode --- */
+html.light header input[type="text"],
+html.light header input[type="search"] {
+  background-color: rgba(248, 250, 252, 0.9) !important;
+  border-color: rgba(0, 0, 0, 0.10) !important;
+  color: #0f172a !important;
+}
+html.light header input::placeholder {
+  color: #94a3b8 !important;
+}
+
+/* --- Navbar header background --- */
+html.light header.sticky,
+html.light header[class*="bg-dark"] {
+  background-color: rgba(248, 250, 252, 0.92) !important;
+  border-bottom-color: rgba(0, 0, 0, 0.08) !important;
+}
+
+/* --- bg-dark with opacity via slash syntax --- */
+html.light .bg-dark-800\/80 {
+  background-color: rgba(248, 250, 252, 0.92) !important;
+}
+html.light .bg-dark-700\/60 {
+  background-color: rgba(226, 232, 240, 0.6) !important;
+}
+html.light .bg-dark-600\/20 {
+  background-color: rgba(226, 232, 240, 0.2) !important;
+}

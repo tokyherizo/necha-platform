@@ -5,6 +5,7 @@ import {
   Search, Sparkles, FolderKanban, MessageSquare,
   FileText, ShoppingBag, BarChart3, Shield, Globe,
 } from 'lucide-react'
+import { useTranslation } from '@/i18n/useTranslation'
 
 const features = [
   {
@@ -67,6 +68,7 @@ const features = [
 export default function FeaturesSection() {
   const ref = useRef(null)
   const inView = useInView(ref, { once: true, margin: '-100px' })
+  const { t } = useTranslation()
 
   return (
     <section id="features" ref={ref} className="py-24 bg-dark-900">
@@ -79,14 +81,13 @@ export default function FeaturesSection() {
           className="text-center mb-16"
         >
           <span className="text-primary-400 text-sm font-semibold uppercase tracking-widest mb-3 block">
-            Everything you need
+            {t.landing.features.tag}
           </span>
           <h2 className="text-4xl lg:text-5xl font-black text-white mb-5">
-            All-in-one{' '}
-            <span className="gradient-text">partnership platform</span>
+            {t.landing.features.h2}
           </h2>
           <p className="text-slate-400 text-xl max-w-2xl mx-auto leading-relaxed">
-            From initial discovery to signed contracts, Necha provides every tool your business needs to build powerful global partnerships.
+            {t.landing.features.desc}
           </p>
         </motion.div>
 

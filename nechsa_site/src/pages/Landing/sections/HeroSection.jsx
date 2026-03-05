@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { ArrowRight, Globe, Sparkles, Shield, Zap } from 'lucide-react'
+import { useTranslation } from '@/i18n/useTranslation'
 
 const floatingCompanies = [
   { name: 'TechCorp', country: '🇺🇸', sector: 'AI' },
@@ -11,14 +12,12 @@ const floatingCompanies = [
   { name: 'DataFlow', country: '🇫🇷', sector: 'Data' },
 ]
 
-const badges = [
-  { icon: Shield, text: 'Verified Companies' },
-  { icon: Sparkles, text: 'AI-Powered Matching' },
-  { icon: Globe, text: '150+ Countries' },
-  { icon: Zap, text: 'Real-time Collaboration' },
-]
+const badgeIconMap = ['badgeVerified', 'badgeAI', 'badgeCountries', 'badgeRealtime']
+const BadgeIcons = [Shield, Sparkles, Globe, Zap]
 
 export default function HeroSection() {
+  const { t } = useTranslation()
+  const badges = badgeIconMap.map((key, i) => ({ icon: BadgeIcons[i], text: t.landing.hero[key] }))
   return (
     <section className="relative min-h-screen flex items-center pt-16 overflow-hidden bg-dark-900">
       {/* Background */}
@@ -49,7 +48,7 @@ export default function HeroSection() {
               className="inline-flex items-center gap-2 bg-primary-600/10 border border-primary-500/30 rounded-full px-4 py-1.5 mb-6"
             >
               <Sparkles size={14} className="text-primary-400" />
-              <span className="text-primary-400 text-sm font-medium">AI-Powered Business Matching</span>
+              <span className="text-primary-400 text-sm font-medium">{t.landing.hero.badge}</span>
             </motion.div>
 
             <motion.h1
@@ -58,9 +57,9 @@ export default function HeroSection() {
               transition={{ duration: 0.6, delay: 0.1 }}
               className="text-5xl lg:text-7xl font-black text-white leading-tight tracking-tight mb-6"
             >
-              Connect.{' '}
-              <span className="gradient-text">Collaborate.</span>
-              {' '}Grow.
+              {t.landing.hero.headline1}{' '}
+              <span className="gradient-text">{t.landing.hero.headline2}</span>
+              {' '}{t.landing.hero.headline3}
             </motion.h1>
 
             <motion.p
@@ -69,7 +68,7 @@ export default function HeroSection() {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="text-xl text-slate-400 leading-relaxed mb-8 max-w-lg"
             >
-              The global platform that connects businesses worldwide. Find partners, launch collaborative projects, sign contracts, and unlock international opportunities — all in one place.
+              {t.landing.hero.subtitle}
             </motion.p>
 
             {/* Badges */}
@@ -98,14 +97,14 @@ export default function HeroSection() {
                 to="/register"
                 className="group flex items-center justify-center gap-2 bg-gradient-to-r from-primary-600 to-secondary-600 hover:from-primary-500 hover:to-secondary-500 text-white font-bold px-8 py-4 rounded-xl transition-all duration-300 shadow-lg shadow-primary-500/30 hover:shadow-primary-500/50 text-base"
               >
-                Start for Free
+                {t.landing.hero.cta}
                 <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
               </Link>
               <a
                 href="#features"
                 className="flex items-center justify-center gap-2 border border-white/10 hover:border-primary-500/50 text-slate-300 hover:text-white font-semibold px-8 py-4 rounded-xl transition-all duration-300 hover:bg-white/5 text-base"
               >
-                Explore Features
+                Explore {t.nav.features}
               </a>
             </motion.div>
 

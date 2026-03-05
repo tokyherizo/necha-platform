@@ -3,6 +3,7 @@ import { useInView } from 'framer-motion'
 import { useRef, useState } from 'react'
 import { Check, Sparkles, Zap, Building2 } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import { useTranslation } from '@/i18n/useTranslation'
 
 const plans = [
   {
@@ -72,6 +73,7 @@ export default function PricingSection() {
   const ref = useRef(null)
   const inView = useInView(ref, { once: true, margin: '-100px' })
   const [annual, setAnnual] = useState(true)
+  const { t } = useTranslation()
 
   return (
     <section id="pricing" ref={ref} className="py-24 bg-dark-900">
@@ -82,14 +84,14 @@ export default function PricingSection() {
           className="text-center mb-12"
         >
           <span className="text-primary-400 text-sm font-semibold uppercase tracking-widest mb-3 block">
-            Simple pricing
+            {t.landing.pricing.tag}
           </span>
           <h2 className="text-4xl lg:text-5xl font-black text-white mb-5">
-            Plans for every <span className="gradient-text">stage of growth</span>
+            {t.landing.pricing.h2}
           </h2>
           {/* Toggle */}
           <div className="flex items-center justify-center gap-3 mt-6">
-            <span className={`text-sm font-medium ${!annual ? 'text-white' : 'text-slate-400'}`}>Monthly</span>
+            <span className={`text-sm font-medium ${!annual ? 'text-white' : 'text-slate-400'}`}>{t.landing.pricing.monthly}</span>
             <button
               onClick={() => setAnnual(!annual)}
               className={`relative w-12 h-6 rounded-full transition-colors ${annual ? 'bg-primary-600' : 'bg-dark-600'}`}
@@ -97,8 +99,8 @@ export default function PricingSection() {
               <div className={`absolute top-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform ${annual ? 'translate-x-6' : 'translate-x-0.5'}`} />
             </button>
             <span className={`text-sm font-medium ${annual ? 'text-white' : 'text-slate-400'}`}>
-              Annual
-              <span className="ml-2 text-xs text-green-400 font-semibold bg-green-500/10 border border-green-500/30 px-2 py-0.5 rounded-full">Save 20%</span>
+              {t.landing.pricing.annual}
+              <span className="ml-2 text-xs text-green-400 font-semibold bg-green-500/10 border border-green-500/30 px-2 py-0.5 rounded-full">{t.landing.pricing.save}</span>
             </span>
           </div>
         </motion.div>
@@ -134,10 +136,10 @@ export default function PricingSection() {
                   ${annual ? price.annual : price.monthly}
                 </span>
                 {price.monthly > 0 && (
-                  <span className="text-slate-400 text-sm ml-1">/month</span>
+                  <span className="text-slate-400 text-sm ml-1">{t.landing.pricing.perMonth}</span>
                 )}
                 {price.monthly === 0 && (
-                  <span className="text-slate-400 text-sm ml-1">forever</span>
+                  <span className="text-slate-400 text-sm ml-1">{t.landing.pricing.forever}</span>
                 )}
               </div>
 

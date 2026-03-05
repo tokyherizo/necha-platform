@@ -8,6 +8,7 @@ import { motion } from 'framer-motion'
 import toast from 'react-hot-toast'
 import { authAPI } from '@/services/api'
 import { useAuthStore } from '@/store/authStore'
+import { useTranslation } from '@/i18n/useTranslation'
 import { SECTORS } from '@/utils/helpers'
 
 const schema = z.object({
@@ -34,6 +35,7 @@ export default function RegisterPage() {
   const [loading, setLoading] = useState(false)
   const [password, setPassword] = useState('')
   const { login } = useAuthStore()
+  const { t } = useTranslation()
   const navigate = useNavigate()
 
   const { register, handleSubmit, formState: { errors } } = useForm({
@@ -45,10 +47,10 @@ export default function RegisterPage() {
     try {
       const res = await authAPI.register(data)
       login(res.data.user, res.data.token)
-      toast.success('Welcome to Necha! 🎉')
+      toast.success(t.auth.register.successMsg)
       navigate('/dashboard')
     } catch (err) {
-      toast.error(err.response?.data?.message || 'Registration failed. Try again.')
+      toast.error(err.response?.data?.message || t.auth.register.errorMsg)
     } finally {
       setLoading(false)
     }
@@ -60,14 +62,14 @@ export default function RegisterPage() {
       animate={{ opacity: 1, y: 0 }}
       className="glass-card rounded-2xl p-8"
     >
-      <h1 className="text-2xl font-bold text-white mb-1">Create your account</h1>
-      <p className="text-slate-400 text-sm mb-6">Join 10,000+ companies on Necha</p>
+      <h1 className="text-2xl font-bold text-white mb-1">{t.auth.register.title}</h1>
+      <p className="text-slate-400 text-sm mb-6">{t.auth.register.subtitle}</p>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         {/* Name + Company */}
         <div className="grid grid-cols-2 gap-3">
           <div>
-            <label className="block text-xs font-medium text-slate-300 mb-1.5">Full Name</label>
+            <label className="block text-xs font-medium text-slate-300 mb-1.5">{t.auth.register.name}</label>
             <div className="relative">
               <User size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
               <input {...register('name')} placeholder="John Doe" className="input-dark pl-9 text-sm" />
@@ -75,7 +77,7 @@ export default function RegisterPage() {
             {errors.name && <p className="text-red-400 text-xs mt-1">{errors.name.message}</p>}
           </div>
           <div>
-            <label className="block text-xs font-medium text-slate-300 mb-1.5">Company Name</label>
+            <label className="block text-xs font-medium text-slate-300 mb-1.5">{t.auth.register.company}</label>
             <div className="relative">
               <Building2 size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
               <input {...register('company_name')} placeholder="Acme Corp" className="input-dark pl-9 text-sm" />
@@ -86,7 +88,7 @@ export default function RegisterPage() {
 
         {/* Email */}
         <div>
-          <label className="block text-xs font-medium text-slate-300 mb-1.5">Work Email</label>
+          <label className="block text-xs font-medium text-slate-300 mb-1.5">{t.auth.register.email}</label>
           <div className="relative">
             <Mail size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
             <input {...register('email')} type="email" placeholder="you@company.com" className="input-dark pl-9 text-sm" />
@@ -97,15 +99,15 @@ export default function RegisterPage() {
         {/* Sector + Country */}
         <div className="grid grid-cols-2 gap-3">
           <div>
-            <label className="block text-xs font-medium text-slate-300 mb-1.5">Sector</label>
+            <label className="block text-xs font-medium text-slate-300 mb-1.5">{t.auth.register.sector}</label>
             <select {...register('sector')} className="input-dark text-sm">
-              <option value="">Select sector</option>
+              <option value="">{t.auth.register.selectSector}</option>
               {SECTORS.map(s => <option key={s} value={s}>{s}</option>)}
             </select>
             {errors.sector && <p className="text-red-400 text-xs mt-1">{errors.sector.message}</p>}
           </div>
           <div>
-            <label className="block text-xs font-medium text-slate-300 mb-1.5">Country</label>
+            <label className="block text-xs font-medium text-slate-300 mb-1.5">{t.auth.register.country}</label>
             <div className="relative">
               <Globe size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
               <input {...register('country')} placeholder="United States" className="input-dark pl-9 text-sm" />
@@ -116,14 +118,14 @@ export default function RegisterPage() {
 
         {/* Password */}
         <div>
-          <label className="block text-xs font-medium text-slate-300 mb-1.5">Password</label>
+          <label className="block text-xs font-medium text-slate-300 mb-1.5">{t.auth.register.password}</label>
           <div className="relative">
             <Lock size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
             <input
               {...register('password')}
               type={showPassword ? 'text' : 'password'}
               onChange={e => setPassword(e.target.value)}
-              placeholder="Minimum 8 characters"
+              placeholder={t.auth.register.passwordPlaceholder}
               className="input-dark pl-9 pr-9 text-sm"
             />
             <button type="button" onClick={() => setShowPassword(!showPassword)}
@@ -147,7 +149,7 @@ export default function RegisterPage() {
 
         {/* Confirm Password */}
         <div>
-          <label className="block text-xs font-medium text-slate-300 mb-1.5">Confirm Password</label>
+          <label className="block text-xs font-medium text-slate-300 mb-1.5">{t.auth.register.confirm}</label>
           <div className="relative">
             <Lock size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
             <input {...register('confirm_password')} type="password" placeholder="••••••••" className="input-dark pl-9 text-sm" />
@@ -157,21 +159,21 @@ export default function RegisterPage() {
 
         {/* Terms */}
         <p className="text-slate-500 text-xs">
-          By creating an account, you agree to our{' '}
-          <Link to="/terms" className="text-primary-400 hover:underline">Terms of Service</Link> and{' '}
-          <Link to="/privacy" className="text-primary-400 hover:underline">Privacy Policy</Link>.
+          {t.auth.register.termsText}{' '}
+          <Link to="/terms" className="text-primary-400 hover:underline">{t.auth.register.terms}</Link> {t.auth.register.and}{' '}
+          <Link to="/privacy" className="text-primary-400 hover:underline">{t.auth.register.privacy}</Link>.
         </p>
 
         <button type="submit" disabled={loading} className="w-full btn-primary flex items-center justify-center gap-2">
           {loading ? <Loader2 size={18} className="animate-spin" /> : (
-            <>Create Account <ArrowRight size={16} /></>
+            <>{t.auth.register.submit} <ArrowRight size={16} /></>
           )}
         </button>
       </form>
 
       <p className="text-center text-slate-400 text-sm mt-6">
-        Already have an account?{' '}
-        <Link to="/login" className="text-primary-400 hover:text-primary-300 font-medium">Sign in</Link>
+        {t.auth.register.hasAccount}{' '}
+        <Link to="/login" className="text-primary-400 hover:text-primary-300 font-medium">{t.auth.register.signIn}</Link>
       </p>
     </motion.div>
   )

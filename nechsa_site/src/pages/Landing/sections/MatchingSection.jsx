@@ -3,6 +3,7 @@ import { useInView } from 'framer-motion'
 import { useRef } from 'react'
 import { Sparkles, Target, TrendingUp, Users, Check } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import { useTranslation } from '@/i18n/useTranslation'
 
 const matches = [
   { name: 'QuantumAI Labs', country: '🇺🇸', sector: 'AI / Machine Learning', score: 97, tags: ['Deep Learning', 'NLP', 'Computer Vision'] },
@@ -22,6 +23,7 @@ const aiPoints = [
 export default function MatchingSection() {
   const ref = useRef(null)
   const inView = useInView(ref, { once: true, margin: '-100px' })
+  const { t } = useTranslation()
 
   return (
     <section ref={ref} className="py-24 bg-dark-900">
@@ -82,7 +84,7 @@ export default function MatchingSection() {
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-0.5">
                       <p className="text-white font-semibold text-sm truncate">{m.name}</p>
-                      <span className="text-xs text-green-400 font-bold flex-shrink-0">{m.score}% match</span>
+                      <span className="text-xs text-green-400 font-bold flex-shrink-0">{m.score}% {t.landing.matching.matchSuffix}</span>
                     </div>
                     <p className="text-slate-400 text-xs mb-1.5">{m.sector}</p>
                     <div className="flex flex-wrap gap-1">
@@ -108,14 +110,13 @@ export default function MatchingSection() {
             transition={{ duration: 0.7, delay: 0.2 }}
           >
             <span className="text-primary-400 text-sm font-semibold uppercase tracking-widest mb-3 block">
-              Our Main Innovation
+              {t.landing.matching.tag}
             </span>
             <h2 className="text-4xl lg:text-5xl font-black text-white mb-6">
-              AI that finds your{' '}
-              <span className="gradient-text">perfect partners</span>
+              {t.landing.matching.h2title}
             </h2>
             <p className="text-slate-400 text-lg leading-relaxed mb-8">
-              Stop spending weeks searching for the right partners. Necha's machine learning engine analyzes your company profile, goals, and capabilities to instantly surface the most compatible businesses worldwide.
+              {t.landing.matching.desc}
             </p>
 
             <ul className="space-y-3 mb-8">
@@ -131,9 +132,9 @@ export default function MatchingSection() {
 
             <div className="grid grid-cols-3 gap-4 mb-8">
               {[
-                { icon: Target, value: '94%', label: 'Match accuracy' },
-                { icon: TrendingUp, value: '3x', label: 'Faster deals' },
-                { icon: Users, value: '8,000+', label: 'Active matches' },
+                { icon: Target, value: '94%', label: t.landing.matching.matchAccuracy },
+                { icon: TrendingUp, value: '3x', label: t.landing.matching.fasterDeals },
+                { icon: Users, value: '8,000+', label: t.landing.matching.activeMatches },
               ].map(({ icon: Icon, value, label }) => (
                 <div key={label} className="text-center p-4 glass-card rounded-xl">
                   <Icon size={18} className="text-primary-400 mx-auto mb-2" />
@@ -144,7 +145,7 @@ export default function MatchingSection() {
             </div>
 
             <Link to="/register" className="btn-primary inline-flex items-center gap-2">
-              Try AI Matching Free
+              {t.landing.matching.tryFree}
               <Sparkles size={16} />
             </Link>
           </motion.div>
