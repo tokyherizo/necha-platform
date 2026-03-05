@@ -5,7 +5,24 @@ import HowItWorksSection from './sections/HowItWorksSection'
 import MatchingSection from './sections/MatchingSection'
 import TestimonialsSection from './sections/TestimonialsSection'
 import PricingSection from './sections/PricingSection'
+import FAQSection from './sections/FAQSection'
 import CTASection from './sections/CTASection'
+
+export default function LandingPage() {
+  return (
+    <div className="overflow-hidden">
+      <HeroSection />
+      <StatsSection />
+      <FeaturesSection />
+      <HowItWorksSection />
+      <MatchingSection />
+      <TestimonialsSection />
+      <PricingSection />
+      <FAQSection />
+      <CTASection />
+    </div>
+  )
+}
 
 export default function LandingPage() {
   return (

@@ -21,8 +21,10 @@ import CreateProjectPage from '@/pages/Projects/CreateProjectPage'
 import MessagesPage from '@/pages/Messages/MessagesPage'
 import MarketplacePage from '@/pages/Marketplace/MarketplacePage'
 import ContractsPage from '@/pages/Contracts/ContractsPage'
+import ContractDetailPage from '@/pages/Contracts/ContractDetailPage'
 import MatchingPage from '@/pages/Matching/MatchingPage'
 import SettingsPage from '@/pages/Settings/SettingsPage'
+import NotificationsPage from '@/pages/Notifications/NotificationsPage'
 import NotFoundPage from '@/pages/NotFoundPage'
 
 // Protected route wrapper
@@ -79,7 +81,9 @@ export default function App() {
         <Route path="/messages" element={<MessagesPage />} />
         <Route path="/messages/:id" element={<MessagesPage />} />
         <Route path="/contracts" element={<ContractsPage />} />
+        <Route path="/contracts/:id" element={<ContractDetailPage />} />
         <Route path="/matching" element={<MatchingPage />} />
+        <Route path="/notifications" element={<NotificationsPage />} />
         <Route path="/settings" element={<SettingsPage />} />
       </Route>
 

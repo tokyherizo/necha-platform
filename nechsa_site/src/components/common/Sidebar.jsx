@@ -1,7 +1,7 @@
 import { NavLink, useNavigate } from 'react-router-dom'
 import {
   LayoutDashboard, Building2, FolderKanban, MessageSquare,
-  ShoppingBag, FileText, Sparkles, Settings, LogOut, X,
+  ShoppingBag, FileText, Sparkles, Settings, LogOut, X, Bell,
 } from 'lucide-react'
 import { useAuthStore } from '@/store/authStore'
 import { useTranslation } from '@/i18n/useTranslation'
@@ -13,13 +13,14 @@ export default function Sidebar({ open, onClose }) {
   const navigate = useNavigate()
 
   const navItems = [
-    { to: '/dashboard',   icon: LayoutDashboard, labelKey: 'dashboard' },
-    { to: '/matching',    icon: Sparkles,        labelKey: 'aiMatching', badge: 'New' },
-    { to: '/companies',   icon: Building2,       labelKey: 'companies' },
-    { to: '/projects',    icon: FolderKanban,    labelKey: 'projects' },
-    { to: '/messages',    icon: MessageSquare,   labelKey: 'messages' },
-    { to: '/contracts',   icon: FileText,        labelKey: 'contracts' },
-    { to: '/marketplace', icon: ShoppingBag,     labelKey: 'marketplace' },
+    { to: '/dashboard',       icon: LayoutDashboard, labelKey: 'dashboard' },
+    { to: '/matching',        icon: Sparkles,        labelKey: 'aiMatching', badge: 'New' },
+    { to: '/companies',       icon: Building2,       labelKey: 'companies' },
+    { to: '/projects',        icon: FolderKanban,    labelKey: 'projects' },
+    { to: '/messages',        icon: MessageSquare,   labelKey: 'messages', badge: '3' },
+    { to: '/contracts',       icon: FileText,        labelKey: 'contracts' },
+    { to: '/marketplace',     icon: ShoppingBag,     labelKey: 'marketplace' },
+    { to: '/notifications',   icon: Bell,            labelKey: 'notifications', badge: '4' },
   ]
 
   const handleLogout = () => {
@@ -65,7 +66,12 @@ export default function Sidebar({ open, onClose }) {
             >
               <Icon size={18} />
               <span className="flex-1 font-medium text-sm">{t.sidebar[labelKey]}</span>
-              {badge && (
+              {badge && badge !== 'New' && (
+                <span className="text-xs font-bold bg-primary-600/80 text-white px-1.5 py-0.5 rounded-full min-w-[1.25rem] text-center">
+                  {badge}
+                </span>
+              )}
+              {badge === 'New' && (
                 <span className="text-xs font-semibold bg-primary-600/30 text-primary-400 px-2 py-0.5 rounded-full border border-primary-500/30">
                   {badge}
                 </span>

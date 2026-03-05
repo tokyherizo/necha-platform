@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
+import { Link } from 'react-router-dom'
 import { FileText, Plus, Search, Eye, PenLine, Archive, Clock, CheckCircle, AlertCircle } from 'lucide-react'
 import { CONTRACT_STATUS_COLORS, formatDate } from '@/utils/helpers'
 import { useTranslation } from '@/i18n/useTranslation'
@@ -108,13 +109,13 @@ export default function ContractsPage() {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: i * 0.05 }}
-                  className="hover:bg-white/2 transition"
+                  className="hover:bg-white/3 transition cursor-pointer"
                 >
                   <td>
-                    <div>
-                      <p className="text-white font-semibold text-sm">{contract.title}</p>
+                    <Link to={`/contracts/${contract.id}`} className="block hover:text-primary-400 transition">
+                      <p className="text-white font-semibold text-sm hover:text-primary-300 transition">{contract.title}</p>
                       <p className="text-slate-500 text-xs">{contract.id}</p>
-                    </div>
+                    </Link>
                   </td>
                   <td>
                     <span className="text-slate-300 text-xs">{contract.type}</span>
@@ -142,9 +143,9 @@ export default function ContractsPage() {
                   </td>
                   <td>
                     <div className="flex items-center gap-2">
-                      <button className="p-1.5 text-slate-400 hover:text-white rounded hover:bg-white/5 transition">
+                      <Link to={`/contracts/${contract.id}`} className="p-1.5 text-slate-400 hover:text-primary-400 rounded hover:bg-primary-500/10 transition">
                         <Eye size={14} />
-                      </button>
+                      </Link>
                       {['draft', 'pending'].includes(contract.status) && (
                         <button className="p-1.5 text-slate-400 hover:text-primary-400 rounded hover:bg-primary-500/10 transition">
                           <PenLine size={14} />

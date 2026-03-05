@@ -3,12 +3,12 @@ import { Link } from 'react-router-dom'
 import {
   Building2, FolderKanban, Users, TrendingUp, MessageSquare,
   FileText, Sparkles, ArrowRight, Plus, ChevronRight, CheckCircle,
-  Clock, AlertCircle,
+  Clock, AlertCircle, ArrowUpRight, Zap, Target, Award,
 } from 'lucide-react'
 import { useAuthStore } from '@/store/authStore'
 import { useTranslation } from '@/i18n/useTranslation'
 import { formatRelativeTime, formatCurrency, PROJECT_STATUS_COLORS } from '@/utils/helpers'
-import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts'
+import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts'
 
 // Mock data — replaced by real API calls when backend is connected
 const chartData = [
@@ -55,10 +55,10 @@ export default function DashboardPage() {
   const { t } = useTranslation()
 
   const statsData = [
-    { icon: Building2,     label: t.dashboard.partners,       value: '24',  change: `+3 ${t.dashboard.thisMonth}`,   color: 'text-primary-400',   bg: 'bg-primary-500/10' },
-    { icon: FolderKanban,  label: t.dashboard.activeProjects, value: '8',   change: `2 ${t.dashboard.nearDeadline}`, color: 'text-green-400',     bg: 'bg-green-500/10' },
-    { icon: MessageSquare, label: t.dashboard.messages,       value: '147', change: `12 ${t.dashboard.unread}`,      color: 'text-yellow-400',    bg: 'bg-yellow-500/10' },
-    { icon: TrendingUp,    label: t.dashboard.opportunities,  value: '36',  change: `+8 ${t.dashboard.newToday}`,   color: 'text-secondary-400', bg: 'bg-secondary-500/10' },
+    { icon: Building2,     label: t.dashboard.partners,       value: '24',  change: '+3 this month',   trend: '+14%', up: true,  color: 'text-primary-400',   bg: 'bg-primary-500/10',   link: '/companies' },
+    { icon: FolderKanban,  label: t.dashboard.activeProjects, value: '8',   change: '2 near deadline', trend: 'Active',up: true, color: 'text-green-400',     bg: 'bg-green-500/10',     link: '/projects' },
+    { icon: MessageSquare, label: t.dashboard.messages,       value: '147', change: '12 unread',       trend: '+8%',  up: true,  color: 'text-yellow-400',    bg: 'bg-yellow-500/10',    link: '/messages' },
+    { icon: TrendingUp,    label: t.dashboard.opportunities,  value: '36',  change: '+8 new today',    trend: '+22%', up: true,  color: 'text-secondary-400', bg: 'bg-secondary-500/10', link: '/matching' },
   ]
 
   const activities = [
@@ -77,32 +77,39 @@ export default function DashboardPage() {
           <h1 className="text-2xl font-black text-white">
             {t.dashboard.welcomeBack}, {user?.company_name || user?.name} 👋
           </h1>
-          <p className="text-slate-400 text-sm mt-1">
-            {t.dashboard.todaySummary}
-          </p>
+          <p className="text-slate-400 text-sm mt-1">{t.dashboard.todaySummary}</p>
         </div>
-        <Link to="/projects/create" className="btn-primary flex items-center gap-2 text-sm">
-          <Plus size={16} />
-          {t.dashboard.newProject}
-        </Link>
+        <div className="flex items-center gap-2">
+          <Link to="/matching" className="flex items-center gap-2 text-sm px-4 py-2 border border-primary-500/40 text-primary-400 hover:bg-primary-500/10 rounded-lg transition">
+            <Sparkles size={14} /> AI Matches
+          </Link>
+          <Link to="/projects/create" className="btn-primary flex items-center gap-2 text-sm">
+            <Plus size={16} /> {t.dashboard.newProject}
+          </Link>
+        </div>
       </div>
 
       {/* Stats */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        {statsData.map(({ icon: Icon, label, value, change, color, bg }, i) => (
-          <motion.div
-            key={label}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: i * 0.06 }}
-            className="stat-card"
+        {statsData.map(({ icon: Icon, label, value, change, trend, up, color, bg, link }, i) => (
+          <motion.div key={label} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.06 }}
+            className="stat-card group cursor-pointer hover:border-white/10 transition"
           >
-            <div className={`w-10 h-10 rounded-xl ${bg} flex items-center justify-center mb-3`}>
-              <Icon size={20} className={color} />
-            </div>
-            <p className="text-3xl font-black text-white">{value}</p>
-            <p className="text-slate-400 text-sm font-medium mt-0.5">{label}</p>
-            <p className="text-slate-500 text-xs mt-1">{change}</p>
+            <Link to={link} className="block">
+              <div className="flex items-start justify-between mb-3">
+                <div className={`w-10 h-10 rounded-xl ${bg} flex items-center justify-center`}>
+                  <Icon size={20} className={color} />
+                </div>
+                <span className={`text-xs font-bold flex items-center gap-0.5 px-2 py-0.5 rounded-full ${
+                  up ? 'text-green-400 bg-green-500/10' : 'text-red-400 bg-red-500/10'
+                }`}>
+                  <ArrowUpRight size={10} />{trend}
+                </span>
+              </div>
+              <p className="text-3xl font-black text-white">{value}</p>
+              <p className="text-slate-400 text-sm font-medium mt-0.5">{label}</p>
+              <p className="text-slate-500 text-xs mt-1">{change}</p>
+            </Link>
           </motion.div>
         ))}
       </div>
@@ -152,25 +159,27 @@ export default function DashboardPage() {
               {t.dashboard.viewAll}
             </Link>
           </div>
-          <div className="space-y-3">
-            {aiMatchesData.map(m => (
-              <div key={m.id} className="flex items-center gap-3 p-3 bg-dark-700/50 rounded-xl hover:bg-dark-700 transition cursor-pointer">
-                <div className="w-10 h-10 bg-gradient-to-br from-primary-600/30 to-secondary-600/30 rounded-xl flex items-center justify-center flex-shrink-0">
-                  <span>{m.country}</span>
+          <div className="space-y-2.5">
+            {aiMatchesData.map((m, i) => (
+              <Link key={m.id} to="/matching"
+                className="flex items-center gap-3 p-3 bg-dark-700/50 rounded-xl hover:bg-dark-700 transition group"
+              >
+                <div className="w-9 h-9 bg-gradient-to-br from-primary-600/30 to-secondary-600/30 border border-white/5 rounded-xl flex items-center justify-center flex-shrink-0 text-base">
+                  {m.country}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-white text-sm font-semibold truncate">{m.name}</p>
-                  <p className="text-slate-400 text-xs">{m.sector}</p>
+                  <p className="text-white text-xs font-bold truncate group-hover:text-primary-300 transition">{m.name}</p>
+                  <p className="text-slate-500 text-xs">{m.sector}</p>
                 </div>
                 <div className="text-right flex-shrink-0">
-                  <span className="text-green-400 text-sm font-bold">{m.score}%</span>
+                  <span className="text-green-400 text-sm font-black">{m.score}%</span>
+                  <p className="text-slate-600 text-[10px]">match</p>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
-          <Link
-            to="/matching"
-            className="mt-4 w-full flex items-center justify-center gap-2 text-primary-400 hover:text-white text-sm font-medium py-2.5 border border-primary-500/30 hover:border-primary-500 rounded-xl transition"
+          <Link to="/matching"
+            className="mt-4 w-full flex items-center justify-center gap-2 text-primary-400 hover:text-white text-sm font-medium py-2.5 border border-primary-500/30 hover:border-primary-500 hover:bg-primary-500/5 rounded-xl transition"
           >
             {t.dashboard.seeAllMatches} <ArrowRight size={14} />
           </Link>
@@ -216,16 +225,20 @@ export default function DashboardPage() {
 
         {/* Activity feed */}
         <div className="glass-card rounded-2xl p-6">
-          <h2 className="text-white font-bold mb-4">{t.dashboard.recentActivity}</h2>
-          <div className="space-y-4">
+          <h2 className="text-white font-bold mb-5">{t.dashboard.recentActivity}</h2>
+          <div className="space-y-0">
             {activities.map(({ icon: Icon, text, time, color }, i) => (
-              <div key={i} className="flex items-start gap-3">
-                <div className={`w-7 h-7 rounded-lg bg-dark-700 flex items-center justify-center flex-shrink-0 mt-0.5`}>
-                  <Icon size={13} className={color} />
+              <div key={i} className="flex gap-3 pb-4 last:pb-0 relative">
+                {/* Timeline line */}
+                {i < activities.length - 1 && (
+                  <div className="absolute left-3.5 top-7 bottom-0 w-px bg-white/5" />
+                )}
+                <div className={`w-7 h-7 rounded-lg bg-dark-700 border border-white/5 flex items-center justify-center flex-shrink-0 z-10`}>
+                  <Icon size={12} className={color} />
                 </div>
-                <div>
+                <div className="pt-0.5">
                   <p className="text-slate-300 text-xs leading-relaxed">{text}</p>
-                  <p className="text-slate-500 text-xs mt-0.5">{time}</p>
+                  <p className="text-slate-600 text-xs mt-0.5">{time}</p>
                 </div>
               </div>
             ))}
