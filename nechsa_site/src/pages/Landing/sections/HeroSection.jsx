@@ -22,18 +22,18 @@ export default function HeroSection() {
     <section className="relative min-h-screen flex items-center pt-16 overflow-hidden bg-dark-900">
       {/* Background */}
       <div className="absolute inset-0 bg-grid opacity-40" />
-      <div className="absolute inset-0 bg-gradient-radial from-primary-900/20 via-transparent to-transparent" />
+      <div className="absolute inset-0 bg-gradient-radial from-transparent via-transparent to-transparent" />
 
       {/* Animated blobs */}
       <motion.div
         animate={{ scale: [1, 1.2, 1], rotate: [0, 90, 0] }}
         transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
-        className="absolute top-1/4 right-1/4 w-[600px] h-[600px] bg-primary-600/5 rounded-full blur-3xl pointer-events-none"
+        className="absolute top-1/4 right-1/4 w-[600px] h-[600px] bg-transparent rounded-full blur-3xl pointer-events-none"
       />
       <motion.div
         animate={{ scale: [1.2, 1, 1.2], rotate: [90, 0, 90] }}
         transition={{ duration: 15, repeat: Infinity, ease: 'linear' }}
-        className="absolute bottom-1/4 left-1/4 w-[400px] h-[400px] bg-secondary-600/5 rounded-full blur-3xl pointer-events-none"
+        className="absolute bottom-1/4 left-1/4 w-[400px] h-[400px] bg-transparent rounded-full blur-3xl pointer-events-none"
       />
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
@@ -55,7 +55,7 @@ export default function HeroSection() {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
-              className="text-5xl lg:text-7xl font-black text-white leading-tight tracking-tight mb-6"
+              className="text-3xl lg:text-5xl font-black text-white leading-snug tracking-wide mb-6"
             >
               {t.landing.hero.headline1}{' '}
               <span className="gradient-text">{t.landing.hero.headline2}</span>
@@ -71,21 +71,6 @@ export default function HeroSection() {
               {t.landing.hero.subtitle}
             </motion.p>
 
-            {/* Badges */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              className="flex flex-wrap gap-3 mb-10"
-            >
-              {badges.map(({ icon: Icon, text }) => (
-                <div key={text} className="flex items-center gap-1.5 bg-white/5 border border-white/10 rounded-full px-3 py-1.5">
-                  <Icon size={13} className="text-primary-400" />
-                  <span className="text-slate-300 text-xs font-medium">{text}</span>
-                </div>
-              ))}
-            </motion.div>
-
             {/* CTA Buttons */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -95,14 +80,14 @@ export default function HeroSection() {
             >
               <Link
                 to="/register"
-                className="group flex items-center justify-center gap-2 bg-gradient-to-r from-primary-600 to-secondary-600 hover:from-primary-500 hover:to-secondary-500 text-white font-bold px-8 py-4 rounded-xl transition-all duration-300 shadow-lg shadow-primary-500/30 hover:shadow-primary-500/50 text-base"
+                className="group flex items-center justify-center gap-2 bg-gradient-to-r from-primary-600 to-secondary-600 hover:from-primary-500 hover:to-secondary-500 text-white font-semibold px-5 py-2.5 rounded-lg transition-all duration-300 shadow-md shadow-primary-500/25 hover:shadow-primary-500/40 text-sm"
               >
                 {t.landing.hero.cta}
-                <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+                <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
               </Link>
               <a
                 href="#features"
-                className="flex items-center justify-center gap-2 border border-white/10 hover:border-primary-500/50 text-slate-300 hover:text-white font-semibold px-8 py-4 rounded-xl transition-all duration-300 hover:bg-white/5 text-base"
+                className="flex items-center justify-center gap-2 border border-white/10 hover:border-primary-500/50 text-slate-300 hover:text-white font-medium px-5 py-2.5 rounded-lg transition-all duration-300 hover:bg-white/5 text-sm"
               >
                 Explore {t.nav.features}
               </a>
